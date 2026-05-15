@@ -2,9 +2,11 @@
    VIGIL ORACLE — landing page script
    Lenis smooth scroll · GSAP ScrollTrigger reveals · counters
    live terminal cycle · FAQ accordion · drawer · clipboard
+   live backend integration: stats · terminal · skills grid
    ============================================================ */
 
 const CA = 'TBA';
+const API_BASE = 'https://vigil-oracle-api-production.up.railway.app/api';
 
 (function () {
   'use strict';
@@ -21,6 +23,54 @@ const CA = 'TBA';
 
   const pad = (n) => String(n).padStart(2, '0');
   const fmtInt = (n) => Math.round(n).toLocaleString('en-US');
+  const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  /* escape user/API text before it touches innerHTML */
+  const esc = (s) =>
+    String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+  /* GET an API path — native fetch + AbortController, 4s timeout */
+  function apiGet(path) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    return fetch(API_BASE + path, {
+      signal: ctrl.signal,
+      headers: { accept: 'application/json' }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .finally(() => clearTimeout(timer));
+  }
+
+  /* ISO timestamp → HH:MM:SS UTC */
+  function fmtClock(iso) {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '--:--:--';
+    return pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' +
+           pad(d.getUTCSeconds());
+  }
+  function nowClock() {
+    const d = new Date();
+    return pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' +
+           pad(d.getUTCSeconds());
+  }
+
+  /* compact relative time from an ISO timestamp */
+  function relTime(iso) {
+    const diff = Date.now() - new Date(iso).getTime();
+    if (!isFinite(diff)) return '';
+    if (diff < 60000) return 'just now';
+    const m = Math.round(diff / 60000);
+    if (m < 60) return m + 'm ago';
+    const h = Math.round(m / 60);
+    if (h < 24) return h + 'h ago';
+    return Math.round(h / 24) + 'd ago';
+  }
 
   /* ----------------------------------------------------------
      [01] LENIS — smooth scroll
@@ -293,8 +343,9 @@ const CA = 'TBA';
     requestAnimationFrame(frame);
   }
 
+  /* generic counters — tokenomics etc. (stats handled by initStats) */
   function initCounters() {
-    const counters = $$('[data-count]');
+    const counters = $$('[data-count]:not([data-stat])');
     if (!counters.length) return;
 
     if (prefersReduced) {
@@ -321,101 +372,150 @@ const CA = 'TBA';
   }
 
   /* ----------------------------------------------------------
-     [08] LIVE TERMINAL — 5-skill cycle
+     [07b] STATS BAR — live API data + count-up + silent refresh
+     GET /api/status → { agents_active, prophecies_cast,
+                         watch_hours, skills_available }
      ---------------------------------------------------------- */
-  const LIVE_RUNS = [
-    {
-      skill: 'whale-watch',
-      lines: [
-        ['09:14:01', 'info', 'skill <s>whale-watch</s> started'],
-        ['09:14:02', 'info', 'window 05:14 &#8594; 09:14 UTC'],
-        ['09:14:04', 'info', 'pulled <n>388</n> transfers &gt; $250k'],
-        ['09:14:05', 'warn', 'cluster of <n>3</n> wallets, one entity'],
-        ['09:14:07', 'hit',  'net accumulation detected'],
-        ['out', 'addr  <a>9pQr4T&#8230;mB2xK7</a>'],
-        ['out', 'flow  <n>+$2,140,000</n> <up>&#9650; IN</up> · SOL'],
-        ['09:14:09', 'info', 'narrative match: <s>"SOL strength"</s>'],
-        ['09:14:11', 'hit',  'Beacon sent · 09:14:11']
-      ]
-    },
-    {
-      skill: 'liquidation-radar',
-      lines: [
-        ['09:15:00', 'info', 'skill <s>liquidation-radar</s> started'],
-        ['09:15:01', 'info', 'scanning <n>7</n> perp venues'],
-        ['09:15:03', 'info', 'open interest <n>$4.18B</n> aggregate'],
-        ['09:15:05', 'warn', 'leverage wall forming below spot'],
-        ['09:15:06', 'hit',  'cascade level identified'],
-        ['out', 'pair  <s>BTC-PERP</s> long liquidations'],
-        ['out', 'level <n>$61,420</n> · depth <n>$88M</n>'],
-        ['09:15:08', 'warn', 'price <n>1.9%</n> from trigger'],
-        ['09:15:10', 'hit',  'Beacon sent · 09:15:10']
-      ]
-    },
-    {
-      skill: 'funding-arb',
-      lines: [
-        ['09:16:00', 'info', 'skill <s>funding-arb</s> started'],
-        ['09:16:02', 'info', 'comparing funding across <n>4</n> venues'],
-        ['09:16:04', 'info', 'normalising to 8h intervals'],
-        ['09:16:05', 'hit',  'carry window detected'],
-        ['out', 'asset <s>HYPE</s> · delta-neutral'],
-        ['out', 'long  <n>-0.011%</n> / short <n>+0.092%</n>'],
-        ['out', 'net   <n>+0.103%</n> per 8h'],
-        ['09:16:08', 'info', 'spread holds &gt; <n>6h</n> backtest'],
-        ['09:16:09', 'hit',  'Beacon sent · 09:16:09']
-      ]
-    },
-    {
-      skill: 'narrative-scanner',
-      lines: [
-        ['09:17:00', 'info', 'skill <s>narrative-scanner</s> started'],
-        ['09:17:03', 'info', 'ingested <n>9,402</n> posts, <n>61</n> sources'],
-        ['09:17:05', 'info', 'clustering by semantic theme'],
-        ['09:17:07', 'hit',  'narrative accelerating'],
-        ['out', 'theme <s>"RWA rotation"</s>'],
-        ['out', 'vel   <n>3.4&#215;</n> 24h baseline <up>&#9650;</up>'],
-        ['out', 'tail  ONDO · CFG · POLYX'],
-        ['09:17:10', 'info', 'cross-ref kol-tracker memory'],
-        ['09:17:12', 'hit',  'Beacon sent · 09:17:12']
-      ]
-    },
-    {
-      skill: 'kol-tracker',
-      lines: [
-        ['09:18:00', 'info', 'skill <s>kol-tracker</s> started'],
-        ['09:18:02', 'info', 'watching <n>142</n> tracked wallets'],
-        ['09:18:04', 'warn', 'correlated entries inside <n>18m</n>'],
-        ['09:18:05', 'hit',  'conviction cluster flagged'],
-        ['out', 'wallets <n>3</n> KOL-tagged &#8594; <s>WIF</s>'],
-        ['out', 'lead    <a>Hn7Yt3&#8230;Lp9Qd4</a>'],
-        ['out', 'size    <n>$612,000</n> combined'],
-        ['09:18:08', 'info', 'follow-through score <n>0.81</n>'],
-        ['09:18:10', 'hit',  'Beacon sent · 09:18:10']
-      ]
-    }
-  ];
+  const STAT_KEYS = {
+    'agents-active':    'agents_active',
+    'prophecies-cast':  'prophecies_cast',
+    'watch-hours':      'watch_hours',
+    'skills-available': 'skills_available'
+  };
 
-  function renderLogToken(html) {
-    return html
-      .replace(/<s>/g, '<span class="tok-str">')
-      .replace(/<\/s>/g, '</span>')
-      .replace(/<n>/g, '<span class="tok-num">')
-      .replace(/<\/n>/g, '</span>')
-      .replace(/<a>/g, '<span class="tok-addr">')
-      .replace(/<\/a>/g, '</span>')
-      .replace(/<up>/g, '<span class="tok-up">')
-      .replace(/<\/up>/g, '</span>');
+  function initStats() {
+    const els = $$('.stat__num[data-stat]');
+    if (!els.length) return;
+
+    const byStat = {};
+    els.forEach((el) => { byStat[el.dataset.stat] = el; });
+
+    let dataReady = false;
+    const visible = new Set();
+
+    /* run the count-up (or snap, if reduced motion) exactly once */
+    function reveal(el) {
+      if (el.dataset.revealed) return;
+      el.dataset.revealed = '1';
+      if (prefersReduced) {
+        el.textContent =
+          fmtInt(parseFloat(el.dataset.count || '0')) +
+          (el.dataset.suffix || '');
+      } else {
+        animateCount(el);
+      }
+    }
+
+    /* fold a /status payload onto the stat elements */
+    function apply(data, animate) {
+      Object.keys(STAT_KEYS).forEach((stat) => {
+        const el = byStat[stat];
+        const val = data[STAT_KEYS[stat]];
+        if (!el || typeof val !== 'number') return;
+        el.dataset.count = String(val);
+        // silent refresh: just write the new value, no re-animation
+        if (!animate && el.dataset.revealed) {
+          el.textContent = fmtInt(val) + (el.dataset.suffix || '');
+        }
+      });
+    }
+
+    /* hold the count-up until live data lands (or fetch settles) */
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          if (dataReady) reveal(entry.target);
+          else visible.add(entry.target);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    els.forEach((el) => io.observe(el));
+
+    function release() {
+      dataReady = true;
+      visible.forEach(reveal);
+      visible.clear();
+    }
+
+    apiGet('/status')
+      .then((data) => { apply(data, true); release(); })
+      .catch((err) => {
+        console.warn('[vigil] /status fetch failed — keeping static stats', err);
+        release();
+      });
+
+    /* silent background refresh every 30s, no animation re-trigger */
+    setInterval(() => {
+      apiGet('/status')
+        .then((data) => apply(data, false))
+        .catch((err) => console.warn('[vigil] /status refresh failed', err));
+    }, 30000);
   }
 
+  /* ----------------------------------------------------------
+     [08] LIVE TERMINAL — real beacon data, 5-skill cycle
+     GET /api/skills/<skill> every ~8s, fading transitions
+     ---------------------------------------------------------- */
+  const TERMINAL_SKILLS = [
+    'whale-watch',
+    'liquidation-radar',
+    'funding-arb',
+    'narrative-scanner',
+    'kol-tracker'
+  ];
+
+  /* level → [css class, label, optional inline colour] */
   function levelTag(level) {
-    switch (level) {
-      case 'info': return '<span class="log-info">[INFO]</span>';
-      case 'warn': return '<span class="log-warn">[WARN]</span>';
-      case 'hit':  return '<span class="log-hit">[HIT ]</span>';
-      case 'err':  return '<span class="log-err">[ERR ]</span>';
-      default:     return '';
+    const L = String(level || '').toUpperCase();
+    switch (L) {
+      case 'HIT':  return '<span class="log-hit">[HIT ]</span>';
+      case 'WARN': return '<span class="log-warn">[WARN]</span>';
+      case 'ERR':
+      case 'ERROR':return '<span class="log-err">[ERR ]</span>';
+      case 'DONE': return '<span class="log-hit" style="color:#5BD98A">[DONE]</span>';
+      case 'INFO':
+      default:     return '<span class="log-info">[INFO]</span>';
     }
+  }
+
+  const tok = (cls, v) => '<span class="' + cls + '">' + esc(v) + '</span>';
+
+  /* a /skills/<skill> payload → flat list of renderable lines */
+  function buildRunLines(data) {
+    const lines = [];
+    (data.beacons || []).forEach((b) => {
+      lines.push({ kind: 'log', time: fmtClock(b.timestamp), level: b.level,
+                   msg: b.message });
+      if (b.address) lines.push({ kind: 'out', text: 'addr  ' + tok('tok-addr', b.address) });
+      if (b.flow)    lines.push({ kind: 'out', text: 'flow  ' + tok('tok-num', b.flow) });
+      if (b.asset)   lines.push({ kind: 'out', text: 'asset ' + tok('tok-str', b.asset) });
+    });
+    const done = fmtClock(data.ran_at);
+    lines.push({
+      kind: 'log',
+      level: 'DONE',
+      time: done,
+      msg: 'Beacon sent · ' + done + '  · duration: ' +
+           (data.duration_ms || 0) + 'ms · source: ' +
+           (data.data_source || 'mock')
+    });
+    return lines;
+  }
+
+  function makeLine(line) {
+    const el = document.createElement('span');
+    el.className = 'live-line';
+    if (line.kind === 'out') {
+      el.innerHTML = '<span class="log-out">         ' + line.text + '</span>';
+    } else {
+      el.innerHTML =
+        '<span class="log-time">' + line.time + '</span> ' +
+        levelTag(line.level) + ' ' + esc(line.msg);
+    }
+    return el;
   }
 
   function initLiveTerminal() {
@@ -428,11 +528,13 @@ const CA = 'TBA';
     let lineTimers = [];
     let cycleTimer = null;
 
+    output.style.transition = 'opacity .3s ease';
+
     /* build the cycling tabs */
-    LIVE_RUNS.forEach((run, i) => {
+    TERMINAL_SKILLS.forEach((skill, i) => {
       const tab = document.createElement('span');
       tab.className = 'terminal__foot-tab';
-      tab.textContent = run.skill;
+      tab.textContent = skill;
       tab.dataset.index = i;
       tab.addEventListener('click', () => {
         clearTimers();
@@ -457,51 +559,69 @@ const CA = 'TBA';
       });
     }
 
-    function playRun() {
-      const run = LIVE_RUNS[runIndex];
-      output.innerHTML = '';
-      skillName.textContent = run.skill;
-      setActiveTab();
+    function scheduleNext() {
+      cycleTimer = setTimeout(() => {
+        runIndex = (runIndex + 1) % TERMINAL_SKILLS.length;
+        playRun();
+      }, 8000);
+    }
 
-      const stepDelay = prefersReduced ? 0 : 360;
-
-      run.lines.forEach((line, i) => {
+    function paintLines(lines) {
+      const stepDelay = prefersReduced ? 0 : 300;
+      lines.forEach((line, i) => {
         const t = setTimeout(() => {
-          const el = document.createElement('span');
-          el.className = 'live-line';
-
-          if (line[0] === 'out') {
-            el.innerHTML =
-              '<span class="log-out">         ' +
-              renderLogToken(line[1]) +
-              '</span>';
-          } else {
-            const [time, level, msg] = line;
-            el.innerHTML =
-              '<span class="log-time">' + time + '</span> ' +
-              levelTag(level) + ' ' +
-              renderLogToken(msg);
-          }
-          output.appendChild(el);
-
-          // append blinking cursor on the final line
-          if (i === run.lines.length - 1) {
+          output.appendChild(makeLine(line));
+          if (i === lines.length - 1) {
             const cur = document.createElement('span');
             cur.className = 'log-cursor';
             cur.textContent = '_';
             output.appendChild(document.createTextNode('\n'));
             output.appendChild(cur);
           }
+          output.scrollTop = output.scrollHeight;
         }, i * stepDelay);
         lineTimers.push(t);
       });
+    }
 
-      // schedule the next skill
-      const runDuration = run.lines.length * stepDelay + 3200;
-      cycleTimer = setTimeout(() => {
-        runIndex = (runIndex + 1) % LIVE_RUNS.length;
-        playRun();
-      }, runDuration);
+    async function playRun() {
+      const skill = TERMINAL_SKILLS[runIndex];
+      setActiveTab();
+
+      // fade the current output out while the request is in flight
+      output.style.opacity = '0';
+
+      let data = null;
+      try {
+        const [payload] = await Promise.all([
+          apiGet('/skills/' + skill),
+          wait(300)
+        ]);
+        data = payload;
+      } catch (err) {
+        console.warn('[vigil] terminal fetch failed: ' + skill, err);
+        await wait(300);
+      }
+
+      output.innerHTML = '';
+      output.style.opacity = '1';
+
+      if (!data) {
+        // graceful fallback — surface the error, then move to next skill
+        skillName.textContent = skill;
+        output.appendChild(makeLine({
+          kind: 'log',
+          time: nowClock(),
+          level: 'ERR',
+          msg: 'failed to reach watcher · retrying in 8s'
+        }));
+        scheduleNext();
+        return;
+      }
+
+      skillName.textContent = skill + ' · ' + (data.tier || 'free');
+      paintLines(buildRunLines(data));
+      scheduleNext();
     }
 
     /* only start cycling when the terminal scrolls into view */
@@ -518,6 +638,33 @@ const CA = 'TBA';
       { threshold: 0.3 }
     );
     io.observe(output);
+  }
+
+  /* ----------------------------------------------------------
+     [08b] SKILLS GRID — augment cards with live "last ran"
+     GET /api/skills → { skills: [{ name, last_ran_at, ... }] }
+     ---------------------------------------------------------- */
+  function initSkillsGrid() {
+    apiGet('/skills')
+      .then((res) => {
+        const skills = (res && res.skills) || [];
+        const byName = {};
+        skills.forEach((s) => { byName[s.name] = s; });
+
+        $$('.skill-card').forEach((card) => {
+          const nameEl = $('.skill-card__name', card);
+          const cronEl = $('.skill-card__cron', card);
+          if (!nameEl || !cronEl) return;
+          const skill = byName[nameEl.textContent.trim()];
+          if (!skill || !skill.last_ran_at) return;
+          cronEl.textContent =
+            cronEl.textContent.trim() +
+            ' · last ran: ' + relTime(skill.last_ran_at);
+        });
+      })
+      .catch((err) => {
+        console.warn('[vigil] /skills fetch failed — keeping static cron text', err);
+      });
   }
 
   /* ----------------------------------------------------------
@@ -606,7 +753,9 @@ const CA = 'TBA';
     initReveals();
     initDividers();
     initCounters();
+    initStats();
     initLiveTerminal();
+    initSkillsGrid();
     initFaq();
     initContract();
     initMarquee();
