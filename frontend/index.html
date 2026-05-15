@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VIGIL ORACLE — an autonomous AI agent framework for crypto traders. Whale-watch, liquidation radar, narrative scanning. The Oracle that never sleeps." />
+  <meta name="theme-color" content="#0A0A0B" />
+  <meta property="og:title" content="VIGIL ORACLE — The Oracle that never sleeps" />
+  <meta property="og:description" content="Autonomous trading intelligence. Markdown skills, GitHub Actions runtime, self-evolving. $VGL holders unlock prophecy skills." />
+  <title>VIGIL ORACLE — The Oracle that never sleeps</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       SVG FILTER DEFS — grain / noise overlay
+       ============================================================ -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+        <feComponentTransfer><feFuncA type="linear" slope="0.42" /></feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============================================================
+       §1 — STATUS BAR
+       ============================================================ -->
+  <div class="statusbar" id="statusbar">
+    <div class="statusbar__inner">
+      <div class="statusbar__group">
+        <span class="statusbar__brand">VIGIL&nbsp;ORACLE</span>
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__item">v0.1.0</span>
+      </div>
+      <div class="statusbar__group statusbar__group--mid">
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__item statusbar__item--live">
+          <span class="dot dot--pulse"></span> STATUS: WATCHING
+        </span>
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__item">LAST BEACON: <span class="num" id="last-beacon">03:47 UTC</span></span>
+      </div>
+      <div class="statusbar__group">
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__item"><span class="num" id="agents-live">1,247</span> AGENTS ACTIVE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       §2 — NAV
+       ============================================================ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#top" class="nav__logo" aria-label="VIGIL ORACLE home">
+        <svg class="beacon" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+          <circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+          <path d="M13 4 L13 22 M13 9 L21 5 M13 9 L5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="13" cy="9" r="2.6" fill="currentColor"/>
+        </svg>
+        <span class="nav__wordmark">VIGIL ORACLE</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#skills" class="nav__link">Skills</a>
+        <a href="#tokenomics" class="nav__link">Tokenomics</a>
+        <a href="#anatomy" class="nav__link">Docs</a>
+        <a href="#roadmap" class="nav__link">Roadmap</a>
+      </nav>
+      <div class="nav__actions">
+        <a href="#cta" class="btn btn--amber btn--sm">Stand watch</a>
+        <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__head">
+      <span class="drawer__label">// NAVIGATION</span>
+      <button class="drawer__close" id="drawer-close" aria-label="Close menu">[ × ]</button>
+    </div>
+    <a href="#skills" class="drawer__link"><span class="drawer__num">01</span> Skills</a>
+    <a href="#tokenomics" class="drawer__link"><span class="drawer__num">02</span> Tokenomics</a>
+    <a href="#anatomy" class="drawer__link"><span class="drawer__num">03</span> Docs</a>
+    <a href="#roadmap" class="drawer__link"><span class="drawer__num">04</span> Roadmap</a>
+    <a href="#faq" class="drawer__link"><span class="drawer__num">05</span> FAQ</a>
+    <a href="#cta" class="btn btn--amber drawer__cta">Stand watch with us</a>
+    <div class="drawer__foot">
+      <span class="dot dot--pulse"></span> STATUS: WATCHING
+    </div>
+  </div>
+  <div class="drawer__scrim" id="drawer-scrim"></div>
+
+  <main id="top">
+
+  <!-- ============================================================
+       §3 — HERO
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" id="hero-bg"></div>
+    <div class="hero__gradient"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <span class="corner corner--tl" aria-hidden="true">[+]</span>
+      <span class="corner corner--tr" aria-hidden="true">[+]</span>
+      <span class="corner corner--bl" aria-hidden="true">[+]</span>
+      <span class="corner corner--br" aria-hidden="true">[+]</span>
+
+      <div class="hero__content">
+        <div class="hero__eyebrow">
+          <span class="dot dot--pulse"></span>
+          <span>STATUS: WATCHING</span>
+          <span class="hero__eyebrow-sep">/</span>
+          <span class="num">AUTONOMOUS SINCE BLOCK 0</span>
+        </div>
+
+        <h1 class="hero__title">
+          The Oracle<br />
+          <em>that never sleeps</em>
+        </h1>
+
+        <p class="hero__sub">
+          An autonomous agent framework for crypto traders. VIGIL runs on a
+          GitHub&nbsp;Actions clock, executes markdown skills, and casts
+          prophecies straight to your channels — whale moves, liquidation
+          cascades, narrative shifts, the things you miss while you sleep.
+        </p>
+
+        <div class="hero__cta">
+          <a href="#cta" class="btn btn--amber btn--lg">
+            Stand watch with us
+            <span class="btn__arrow">→</span>
+          </a>
+          <a href="#anatomy" class="btn btn--ghost btn--lg">Read the docs</a>
+        </div>
+
+        <ul class="hero__meta">
+          <li><span class="num">32</span> skills</li>
+          <li class="hero__meta-sep">/</li>
+          <li><span class="num">6</span> chains watched</li>
+          <li class="hero__meta-sep">/</li>
+          <li><span class="num">100%</span> open core</li>
+        </ul>
+      </div>
+
+      <a href="#stats" class="hero__scroll" aria-label="Scroll down">
+        <span class="hero__scroll-label">SCROLL</span>
+        <span class="hero__chevron" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 5 L8 11 L13 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       §4 — MARQUEE TICKER
+       ============================================================ -->
+  <section class="marquee" aria-label="Skill index">
+    <div class="marquee__track">
+      <span class="marquee__set">
+        <span class="marquee__item">whale-watch</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">liquidation-radar</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">funding-arb</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">narrative-scanner</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">kol-tracker</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">dex-sniper-alert</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">unlock-calendar</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">bridge-monitor</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item marquee__item--gated">prophecy-premarket</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item marquee__item--gated">prophecy-anomaly</span><span class="marquee__plus">[+]</span>
+      </span>
+      <span class="marquee__set" aria-hidden="true">
+        <span class="marquee__item">whale-watch</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">liquidation-radar</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">funding-arb</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">narrative-scanner</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">kol-tracker</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">dex-sniper-alert</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">unlock-calendar</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item">bridge-monitor</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item marquee__item--gated">prophecy-premarket</span><span class="marquee__plus">[+]</span>
+        <span class="marquee__item marquee__item--gated">prophecy-anomaly</span><span class="marquee__plus">[+]</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       §5 — STATS BAR
+       ============================================================ -->
+  <section class="stats" id="stats">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <div class="stats__grid">
+        <div class="stat reveal">
+          <span class="stat__corner" aria-hidden="true">[+]</span>
+          <span class="stat__num num" data-count="1247" data-suffix="">0</span>
+          <span class="stat__label">Agents Active</span>
+          <span class="stat__note">forks running live</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__corner" aria-hidden="true">[+]</span>
+          <span class="stat__num num" data-count="38492" data-suffix="">0</span>
+          <span class="stat__label">Prophecies Cast</span>
+          <span class="stat__note">alerts delivered to date</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__corner" aria-hidden="true">[+]</span>
+          <span class="stat__num num" data-count="144512" data-suffix="">0</span>
+          <span class="stat__label">Watch Hours</span>
+          <span class="stat__note">cumulative uptime</span>
+        </div>
+        <div class="stat reveal">
+          <span class="stat__corner" aria-hidden="true">[+]</span>
+          <span class="stat__num num" data-count="32" data-suffix="">0</span>
+          <span class="stat__label">Skills Available</span>
+          <span class="stat__note">free core + prophecy tier</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §6 — WATCH THE DEPTHS / WHY VIGIL
+       ============================================================ -->
+  <section class="why section" id="why">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[01] WATCH THE DEPTHS</span>
+        <h2 class="section__title">Most edge is lost <em>between glances.</em></h2>
+        <p class="section__lead">
+          Markets move on a clock you can't keep. VIGIL keeps it for you —
+          three principles make the watch hold.
+        </p>
+      </header>
+
+      <div class="why__grid">
+        <article class="why__col reveal">
+          <span class="why__num">[ 01 ]</span>
+          <div class="why__diagram" aria-hidden="true">
+            <svg viewBox="0 0 120 60" width="120" height="60">
+              <circle cx="20" cy="30" r="6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M26 30 H94" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <path d="M60 14 V46" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              <circle cx="60" cy="30" r="3" fill="currentColor"/>
+              <path d="M100 24 L108 30 L100 36 Z" fill="currentColor"/>
+              <text x="14" y="54" font-size="7" fill="currentColor" font-family="monospace">cron</text>
+              <text x="92" y="54" font-size="7" fill="currentColor" font-family="monospace">cast</text>
+            </svg>
+          </div>
+          <h3 class="why__title">Autonomous</h3>
+          <p class="why__copy">
+            VIGIL is not a dashboard you remember to open. It's a scheduled
+            runtime. Every skill carries its own cron — every four hours,
+            every block, every funding window — and fires without a human in
+            the loop.
+          </p>
+          <p class="why__copy">
+            The agent wakes, gathers state, reasons over it, and sleeps. If a
+            whale moves at 03:47 UTC, the beacon is already lit before your
+            alarm. No babysitting, no missed candles.
+          </p>
+          <a href="#three-steps" class="link-arrow">See the runtime <span>→</span></a>
+        </article>
+
+        <article class="why__col reveal">
+          <span class="why__num">[ 02 ]</span>
+          <div class="why__diagram" aria-hidden="true">
+            <svg viewBox="0 0 120 60" width="120" height="60">
+              <rect x="10" y="22" width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="49" y="10" width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="49" y="34" width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="88" y="22" width="22" height="16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M32 30 H49 M71 18 H80 V30 H88 M71 42 H80 V30" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+            </svg>
+          </div>
+          <h3 class="why__title">Composable</h3>
+          <p class="why__copy">
+            Skills are plain markdown — YAML frontmatter, a prompt body, a
+            schedule. No SDK, no compiler. Fork the repo, drop a new
+            <code>SKILL.md</code> into the folder, and the scheduler picks it
+            up on the next run.
+          </p>
+          <p class="why__copy">
+            Skills read each other's memory. <code>whale-watch</code> flags an
+            address; <code>kol-tracker</code> cross-references it; the
+            narrative scanner ties it to a ticker. Edge compounds.
+          </p>
+          <a href="#skills" class="link-arrow">Browse the library <span>→</span></a>
+        </article>
+
+        <article class="why__col reveal">
+          <span class="why__num">[ 03 ]</span>
+          <div class="why__diagram" aria-hidden="true">
+            <svg viewBox="0 0 120 60" width="120" height="60">
+              <path d="M60 8 L74 16 V34 C74 44 68 50 60 54 C52 50 46 44 46 34 V16 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <circle cx="60" cy="28" r="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M60 28 V36" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M22 30 H42 M78 30 H98" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3 class="why__title">Token-gated</h3>
+          <p class="why__copy">
+            The core is free and open forever — eight production skills, the
+            scheduler, the runner. No wall on the fundamentals.
+          </p>
+          <p class="why__copy">
+            <code>$VGL</code> holders unlock the <code>prophecy-*</code> tier:
+            pre-market hunting, on-chain anomaly detection, and the heavier
+            models. Hold the key, light the deeper beam — verified on-chain at
+            run time.
+          </p>
+          <a href="#tokenomics" class="link-arrow">See $VGL utility <span>→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §7 — ANATOMY OF A SKILL
+       ============================================================ -->
+  <section class="anatomy section" id="anatomy">
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[02] HOW SKILLS WORK</span>
+        <h2 class="section__title">Anatomy of a <em>skill.</em></h2>
+        <p class="section__lead">
+          One markdown file in. One beacon out. Here is
+          <code>whale-watch</code> — the file on the left, the run on the
+          right.
+        </p>
+      </header>
+
+      <div class="anatomy__split reveal">
+        <!-- LEFT: SKILL.md -->
+        <div class="terminal">
+          <div class="terminal__bar">
+            <span class="terminal__dots"><i></i><i></i><i></i></span>
+            <span class="terminal__path">skills/whale-watch/SKILL.md</span>
+            <span class="terminal__tag">MARKDOWN</span>
+          </div>
+          <div class="terminal__body scanlines">
+<pre class="code"><span class="ln"> 1</span><span class="tok-com">---</span>
+<span class="ln"> 2</span><span class="tok-key">name</span>: <span class="tok-str">whale-watch</span>
+<span class="ln"> 3</span><span class="tok-key">tier</span>: <span class="tok-str">free</span>
+<span class="ln"> 4</span><span class="tok-key">schedule</span>: <span class="tok-str">"0 */4 * * *"</span>  <span class="tok-com"># every 4h</span>
+<span class="ln"> 5</span><span class="tok-key">chains</span>: [<span class="tok-str">solana</span>, <span class="tok-str">ethereum</span>]
+<span class="ln"> 6</span><span class="tok-key">threshold_usd</span>: <span class="tok-num">250000</span>
+<span class="ln"> 7</span><span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">discord</span>]
+<span class="ln"> 8</span><span class="tok-com">---</span>
+<span class="ln"> 9</span>
+<span class="ln">10</span><span class="tok-head"># Whale Watch</span>
+<span class="ln">11</span>
+<span class="ln">12</span>You are a whale-tracking analyst. Each run:
+<span class="ln">13</span>
+<span class="ln">14</span><span class="tok-key">1.</span> Pull transfers above <span class="tok-code">threshold_usd</span>
+<span class="ln">15</span>   from the indexer, last <span class="tok-num">4</span> hours.
+<span class="ln">16</span><span class="tok-key">2.</span> Drop known CEX wallets and routers
+<span class="ln">17</span>   via <span class="tok-code">memory/known-wallets.json</span>.
+<span class="ln">18</span><span class="tok-key">3.</span> Cluster remaining flows by entity.
+<span class="ln">19</span>   Flag wallets moving one direction.
+<span class="ln">20</span><span class="tok-key">4.</span> Cross-check tickers against the
+<span class="ln">21</span>   <span class="tok-code">narrative-scanner</span> memory.
+<span class="ln">22</span>
+<span class="ln">23</span><span class="tok-head">## Output</span>
+<span class="ln">24</span>
+<span class="ln">25</span>Emit one beacon per cluster: address,
+<span class="ln">26</span>net USD, direction, one-line read.
+<span class="ln">27</span>Stay terse. No advice. Signal only.</pre>
+          </div>
+        </div>
+
+        <!-- RIGHT: execution log -->
+        <div class="terminal">
+          <div class="terminal__bar">
+            <span class="terminal__dots"><i></i><i></i><i></i></span>
+            <span class="terminal__path">runs/whale-watch.0347Z.log</span>
+            <span class="terminal__tag terminal__tag--live"><span class="dot dot--pulse"></span> RUN</span>
+          </div>
+          <div class="terminal__body scanlines">
+<pre class="code"><span class="log-time">03:47:01</span> <span class="log-info">[INFO]</span> skill <span class="tok-str">whale-watch</span> started
+<span class="log-time">03:47:01</span> <span class="log-info">[INFO]</span> window 23:47 &#8594; 03:47 UTC
+<span class="log-time">03:47:03</span> <span class="log-info">[INFO]</span> pulled <span class="tok-num">412</span> transfers &gt; $250k
+<span class="log-time">03:47:04</span> <span class="log-info">[INFO]</span> filtered <span class="tok-num">389</span> CEX / router hops
+<span class="log-time">03:47:06</span> <span class="log-warn">[WARN]</span> cluster of <span class="tok-num">4</span> wallets, one entity
+<span class="log-time">03:47:06</span> <span class="log-info">[INFO]</span> entity tag: <span class="tok-str">"early-SOL-LP"</span>
+<span class="log-time">03:47:08</span> <span class="log-hit">[HIT ]</span> net accumulation detected
+<span class="log-out">         addr  </span><span class="tok-addr">7xKpL2&#8230;q9Fv3R</span>
+<span class="log-out">         flow  </span><span class="tok-num">+$1,840,200</span> <span class="tok-up">&#9650; IN</span>
+<span class="log-out">         asset </span><span class="tok-str">JUP</span> · <span class="tok-num">6</span> buys, <span class="tok-num">0</span> sells
+<span class="log-time">03:47:10</span> <span class="log-info">[INFO]</span> narrative match: <span class="tok-str">"perp DEX szn"</span>
+<span class="log-time">03:47:11</span> <span class="log-info">[INFO]</span> formatting beacon &#8594; telegram
+<span class="log-time">03:47:12</span> <span class="log-hit">[DONE]</span> Beacon sent · <span class="tok-num">1</span> cluster · 11.4s
+<span class="log-cursor">_</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="anatomy__notes reveal">
+        <div class="anatomy__note">
+          <span class="anatomy__note-k">FRONTMATTER</span>
+          <p>Schedule, chains, thresholds and outputs — declarative config the scheduler reads without running the skill.</p>
+        </div>
+        <div class="anatomy__note">
+          <span class="anatomy__note-k">PROMPT BODY</span>
+          <p>Plain instructions. The runner hands this to the model with the gathered on-chain state attached.</p>
+        </div>
+        <div class="anatomy__note">
+          <span class="anatomy__note-k">MEMORY</span>
+          <p>Skills read and write a shared JSON memory folder, so context survives between runs and across skills.</p>
+        </div>
+        <div class="anatomy__note">
+          <span class="anatomy__note-k">BEACON</span>
+          <p>The single structured output — pushed to Telegram, Discord or Slack the moment the run completes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §8 — SKILLS COMPOSE / LIBRARY
+       ============================================================ -->
+  <section class="skills section" id="skills">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[03] SKILL LIBRARY</span>
+        <h2 class="section__title">Skills <em>compose.</em></h2>
+        <p class="section__lead">
+          Eight in the free core. Twenty-four more in the prophecy tier.
+          Each runs on its own clock and writes to the same memory.
+        </p>
+      </header>
+
+      <div class="skills__grid">
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[01]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">whale-watch</h3>
+          <p class="skill-card__desc">Tracks large transfers, clusters them by entity, and flags one-directional accumulation.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>7xKpL2&#8230;q9Fv3R +$1.84M &#9650; JUP</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · 0 */4 * * *</span>
+            <span class="skill-card__trig">Runs every 4h</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[02]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">liquidation-radar</h3>
+          <p class="skill-card__desc">Maps open-interest leverage clusters and warns before a cascade level is hit.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>BTC long liq wall · $61,420 · $88M</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · */15 * * * *</span>
+            <span class="skill-card__trig">Runs every 15m</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[03]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">funding-arb</h3>
+          <p class="skill-card__desc">Compares perp funding across venues and surfaces delta-neutral carry windows.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>HYPE +0.092% / -0.011% · 4 venues</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · 0 */1 * * *</span>
+            <span class="skill-card__trig">Runs hourly</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[04]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">narrative-scanner</h3>
+          <p class="skill-card__desc">Reads social and news velocity, then ranks emerging narratives by acceleration.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>"RWA rotation" · velocity &#9650; 3.4&#215;</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · 0 */2 * * *</span>
+            <span class="skill-card__trig">Runs every 2h</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[05]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">kol-tracker</h3>
+          <p class="skill-card__desc">Watches a curated set of wallets and accounts, scoring conviction by follow-through.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>3 KOL wallets entered WIF · 18m span</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · */30 * * * *</span>
+            <span class="skill-card__trig">Runs every 30m</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[06]</span>
+            <span class="tag tag--free">FREE</span>
+          </header>
+          <h3 class="skill-card__name">dex-sniper-alert</h3>
+          <p class="skill-card__desc">Detects fresh pools with credible liquidity and clean deployer history.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>new pool · $214k LP · deployer clean</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · */5 * * * *</span>
+            <span class="skill-card__trig">Runs every 5m</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[07]</span>
+            <span class="tag tag--prophecy">PROPHECY</span>
+          </header>
+          <h3 class="skill-card__name">prophecy-premarket</h3>
+          <p class="skill-card__desc">Hunts pre-listing and pre-TGE flow signals before they reach public order books.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>OTC bid stack thickening · 2 desks</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · 0 */6 * * *</span>
+            <span class="skill-card__trig">$VGL-gated</span>
+          </footer>
+        </article>
+
+        <article class="skill-card reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <header class="skill-card__head">
+            <span class="skill-card__num">[08]</span>
+            <span class="tag tag--prophecy">PROPHECY</span>
+          </header>
+          <h3 class="skill-card__name">prophecy-anomaly</h3>
+          <p class="skill-card__desc">Flags on-chain behaviour that breaks an address's own historical pattern.</p>
+          <div class="skill-card__out">
+            <span class="skill-card__out-k">&#8627; out</span>
+            <code>dormant 412d wallet · sudden 9 txns</code>
+          </div>
+          <footer class="skill-card__foot">
+            <span class="skill-card__cron">cron · */20 * * * *</span>
+            <span class="skill-card__trig">$VGL-gated</span>
+          </footer>
+        </article>
+
+      </div>
+
+      <p class="skills__more reveal">
+        <span class="num">24</span> more skills in the prophecy tier — unlock calendar,
+        bridge monitor, governance watch and beyond.
+        <a href="#tokenomics" class="link-arrow">See $VGL access <span>→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §9 — THREE STEPS
+       ============================================================ -->
+  <section class="steps section" id="three-steps">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[04] HOW VIGIL WORKS</span>
+        <h2 class="section__title">Three steps to <em>standing watch.</em></h2>
+        <p class="section__lead">
+          No servers, no infrastructure bill. Your fork runs on
+          GitHub&nbsp;Actions minutes.
+        </p>
+      </header>
+
+      <div class="steps__list">
+
+        <article class="step reveal">
+          <div class="step__index">
+            <span class="step__num">01</span>
+            <span class="step__line" aria-hidden="true"></span>
+          </div>
+          <div class="step__body">
+            <h3 class="step__title">Fork</h3>
+            <p class="step__copy">
+              Fork the VIGIL repository to your own account. You get the
+              scheduler, the runner, eight production skills and the shared
+              memory folder. Enable Actions and the clock starts.
+            </p>
+            <div class="terminal terminal--inline">
+              <div class="terminal__bar">
+                <span class="terminal__dots"><i></i><i></i><i></i></span>
+                <span class="terminal__path">bash</span>
+              </div>
+              <div class="terminal__body">
+<pre class="code"><span class="tok-com"># clone your fork and enter the watch</span>
+<span class="tok-key">$</span> gh repo fork vigil-oracle/vigil --clone
+<span class="tok-key">$</span> cd vigil
+<span class="tok-key">$</span> gh workflow enable scheduler.yml
+<span class="log-hit">&#10003;</span> scheduler armed · next run in 04:00:00</pre>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <div class="step__index">
+            <span class="step__num">02</span>
+            <span class="step__line" aria-hidden="true"></span>
+          </div>
+          <div class="step__body">
+            <h3 class="step__title">Configure</h3>
+            <p class="step__copy">
+              Edit one config file. Point VIGIL at your output channels, set
+              your thresholds, switch skills on or off. Drop your own
+              <code>SKILL.md</code> files in to extend the watch.
+            </p>
+            <div class="terminal terminal--inline">
+              <div class="terminal__bar">
+                <span class="terminal__dots"><i></i><i></i><i></i></span>
+                <span class="terminal__path">vigil.config.yml</span>
+              </div>
+              <div class="terminal__body">
+<pre class="code"><span class="tok-key">watcher</span>:
+  <span class="tok-key">name</span>: <span class="tok-str">"night-desk"</span>
+  <span class="tok-key">outputs</span>:
+    <span class="tok-key">telegram</span>: <span class="tok-str">"${TG_CHAT_ID}"</span>
+  <span class="tok-key">skills</span>:
+    <span class="tok-key">whale-watch</span>:      { <span class="tok-key">enabled</span>: <span class="tok-num">true</span> }
+    <span class="tok-key">liquidation-radar</span>: { <span class="tok-key">enabled</span>: <span class="tok-num">true</span> }
+    <span class="tok-key">funding-arb</span>:      { <span class="tok-key">enabled</span>: <span class="tok-num">false</span> }</pre>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="step reveal">
+          <div class="step__index">
+            <span class="step__num">03</span>
+            <span class="step__line step__line--last" aria-hidden="true"></span>
+          </div>
+          <div class="step__body">
+            <h3 class="step__title">Watch</h3>
+            <p class="step__copy">
+              Close the laptop. VIGIL runs on schedule, reasons over fresh
+              on-chain state, and sends beacons the moment something matters.
+              You read signal, not noise.
+            </p>
+            <div class="terminal terminal--inline">
+              <div class="terminal__bar">
+                <span class="terminal__dots"><i></i><i></i><i></i></span>
+                <span class="terminal__path">telegram · @night-desk</span>
+              </div>
+              <div class="terminal__body">
+<pre class="code"><span class="log-time">03:47</span> <span class="tok-str">&#9672; BEACON · whale-watch</span>
+       Net accumulation flagged.
+       <span class="tok-addr">7xKpL2&#8230;q9Fv3R</span> <span class="tok-num">+$1.84M</span> JUP
+       Read: aligns with perp-DEX narrative.
+<span class="log-time">04:02</span> <span class="tok-str">&#9672; BEACON · liquidation-radar</span>
+       BTC long wall at <span class="tok-num">$61,420</span> · <span class="tok-num">$88M</span></pre>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §10 — ARCHITECTURE DIAGRAM
+       ============================================================ -->
+  <section class="arch section" id="architecture">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[05] SYSTEM DESIGN</span>
+        <h2 class="section__title">The watch, <em>end to end.</em></h2>
+        <p class="section__lead">
+          Six moving parts. No private servers. Every run is a public,
+          auditable Actions log.
+        </p>
+      </header>
+
+      <div class="arch__frame reveal">
+        <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+        <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+        <div class="scanlines" aria-hidden="true"></div>
+<pre class="arch__ascii">      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+      &#9474;   GITHUB ACTIONS · CRON   &#9474;   wakes the agent on schedule
+      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+                   &#9474; trigger
+                   &#9660;
+      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+      &#9474;        SCHEDULER         &#9474;   reads frontmatter, picks due skills
+      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+                   &#9474; dispatch
+                   &#9660;
+      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+      &#9474;       SKILL RUNNER       &#9474;   gathers on-chain state + memory
+      &#9492;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;
+           &#9474; prompt         &#9474; read / write
+           &#9660;                &#9660;
+   &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+   &#9474;  REASONING    &#9474;  &#9474; SKILLS / MEM  &#9474;
+   &#9474;   ENGINE      &#9474;&#9668;&#9472;&#9508;  *.md · *.json &#9474;
+   &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+           &#9474; structured beacon
+           &#9660;
+      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+      &#9474;          OUTPUT          &#9474;
+      &#9474;  TELEGRAM · DISCORD · SLACK
+      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</pre>
+      </div>
+
+      <div class="arch__legend reveal">
+        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Stateless runtime</strong> — nothing persists but the git repo. Memory is committed JSON.</div>
+        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Auditable</strong> — every run is a public Actions log you can replay.</div>
+        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Portable</strong> — the runner is Node + Fastify; lift it to Railway any time.</div>
+      </div>
+
+      <p class="arch__caption reveal">
+        GitHub's scheduler is the heartbeat. The Scheduler reads each skill's
+        frontmatter and dispatches only what is due. The Runner assembles
+        on-chain state and shared memory, hands it to the reasoning engine, and
+        the structured beacon it returns is pushed to your channels. The whole
+        loop is stateless — memory lives as committed JSON, so any run can be
+        replayed or audited from the git history alone.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §11 — LIVE TERMINAL DEMO
+       ============================================================ -->
+  <section class="live section" id="live">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[06] LIVE EXECUTION</span>
+        <h2 class="section__title">Watch a run <em>unfold.</em></h2>
+        <p class="section__lead">
+          A real-time cycle through five skills as they fire. Mock data,
+          real format.
+        </p>
+      </header>
+
+      <div class="live__terminal reveal">
+        <div class="terminal">
+          <div class="terminal__bar">
+            <span class="terminal__dots"><i></i><i></i><i></i></span>
+            <span class="terminal__path">vigil@oracle · runner</span>
+            <span class="terminal__tag terminal__tag--live">
+              <span class="dot dot--pulse"></span> <span id="live-skill">whale-watch</span>
+            </span>
+          </div>
+          <div class="terminal__body terminal__body--tall scanlines">
+            <pre class="code" id="live-output"></pre>
+          </div>
+          <div class="terminal__foot">
+            <span class="terminal__foot-k">CYCLING</span>
+            <span class="terminal__foot-tabs" id="live-tabs"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §12 — TOKENOMICS
+       ============================================================ -->
+  <section class="token section" id="tokenomics">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[07] THE $VGL TOKEN</span>
+        <h2 class="section__title">One key. The <em>deeper beam.</em></h2>
+        <p class="section__lead section__lead--wide">
+          <code>$VGL</code> does one job and does it cleanly: it gates the
+          <code>prophecy-*</code> skill tier. No staking maze, no emissions, no
+          governance theatre at launch. Hold the token, your fork verifies the
+          balance on-chain at run time, and the premium skills light up. The
+          free core never asks for it.
+        </p>
+      </header>
+
+      <div class="token__grid">
+
+        <div class="token__box reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <span class="token__box-label">TOTAL SUPPLY</span>
+          <span class="token__box-num num" data-count="1000000000" data-suffix="">0</span>
+          <span class="token__box-sub">fixed · no mint function · no inflation</span>
+        </div>
+
+        <div class="token__box reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <span class="token__box-label">DISTRIBUTION</span>
+          <div class="token__bar" aria-hidden="true">
+            <span class="token__bar-seg token__bar-seg--fair" style="width:95%"></span>
+            <span class="token__bar-seg token__bar-seg--dev" style="width:5%"></span>
+          </div>
+          <div class="token__bar-key">
+            <span><i class="token__swatch token__swatch--fair"></i> 95% fair launch</span>
+            <span><i class="token__swatch token__swatch--dev"></i> 5% locked dev</span>
+          </div>
+          <span class="token__box-sub">dev allocation time-locked 12 months</span>
+        </div>
+
+        <div class="token__box reveal">
+          <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+          <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+          <span class="token__box-label">HOLDER UTILITY</span>
+          <ul class="token__util">
+            <li><span class="token__util-mark">&#8594;</span> Unlocks all <code>prophecy-*</code> skills</li>
+            <li><span class="token__util-mark">&#8594;</span> Priority on new skill rollouts</li>
+            <li><span class="token__util-mark">&#8594;</span> Vote weight in the future skill DAO</li>
+          </ul>
+          <span class="token__box-sub">verified on-chain · no custody</span>
+        </div>
+
+      </div>
+
+      <div class="token__strip reveal">
+        <span class="token__strip-item"><span class="token__strip-k">CHAIN</span> Solana</span>
+        <span class="token__strip-sep">·</span>
+        <span class="token__strip-item"><span class="token__strip-k">LAUNCH</span> pump.fun</span>
+        <span class="token__strip-sep">·</span>
+        <span class="token__strip-item"><span class="token__strip-k">TICKER</span> $VGL</span>
+        <span class="token__strip-sep">·</span>
+        <span class="token__strip-item"><span class="token__strip-k">TAX</span> 0 / 0</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §13 — COMPARISON TABLE
+       ============================================================ -->
+  <section class="compare section" id="compare">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[08] WHY $VGL</span>
+        <h2 class="section__title">Where VIGIL <em>holds the edge.</em></h2>
+        <p class="section__lead">
+          A general agent is broad. A centralized bot is rented. Manual is
+          slow. VIGIL is specialized, owned, and awake.
+        </p>
+      </header>
+
+      <div class="compare__wrap reveal">
+        <table class="compare__table">
+          <thead>
+            <tr>
+              <th class="compare__crit">Criteria</th>
+              <th class="compare__col compare__col--hl">VIGIL ORACLE</th>
+              <th class="compare__col">Aeon <span>general agent</span></th>
+              <th class="compare__col">Centralized bots <span>3Commas-class</span></th>
+              <th class="compare__col">Manual trading</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="compare__crit">Cost</td>
+              <td class="compare__col--hl"><span class="yes">Free core</span><small>Actions minutes only</small></td>
+              <td><span class="yes">Free</span><small>open framework</small></td>
+              <td><span class="no">Subscription</span><small>$30&#8211;100 / mo</small></td>
+              <td><span class="mid">Time</span><small>your hours</small></td>
+            </tr>
+            <tr>
+              <td class="compare__crit">Customization</td>
+              <td class="compare__col--hl"><span class="yes">Full</span><small>markdown skills</small></td>
+              <td><span class="yes">Full</span><small>but unfocused</small></td>
+              <td><span class="no">Presets</span><small>locked logic</small></td>
+              <td><span class="yes">Total</span><small>but unscaled</small></td>
+            </tr>
+            <tr>
+              <td class="compare__crit">Privacy</td>
+              <td class="compare__col--hl"><span class="yes">Self-hosted</span><small>your repo, your keys</small></td>
+              <td><span class="yes">Self-hosted</span><small>your infra</small></td>
+              <td><span class="no">Custodial</span><small>API keys shared</small></td>
+              <td><span class="yes">Private</span><small>nothing shared</small></td>
+            </tr>
+            <tr>
+              <td class="compare__crit">Speed</td>
+              <td class="compare__col--hl"><span class="yes">Scheduled</span><small>down to 5-min cron</small></td>
+              <td><span class="mid">Manual</span><small>you prompt it</small></td>
+              <td><span class="yes">Real-time</span><small>always on</small></td>
+              <td><span class="no">Human</span><small>you must be awake</small></td>
+            </tr>
+            <tr>
+              <td class="compare__crit">Edge skills</td>
+              <td class="compare__col--hl"><span class="yes">Trading-native</span><small>built for this</small></td>
+              <td><span class="no">Generic</span><small>not domain-tuned</small></td>
+              <td><span class="mid">TA only</span><small>indicator presets</small></td>
+              <td><span class="mid">Your skill</span><small>caps at you</small></td>
+            </tr>
+            <tr>
+              <td class="compare__crit">Self-evolving</td>
+              <td class="compare__col--hl"><span class="yes">Yes</span><small>skills add skills</small></td>
+              <td><span class="yes">Yes</span><small>general agent</small></td>
+              <td><span class="no">No</span><small>vendor roadmap</small></td>
+              <td><span class="no">No</span><small>static habits</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare__foot reveal">
+        <span class="num">&#9670;</span> VIGIL borrows Aeon's self-evolving architecture
+        and points all of it at one job — trading intelligence.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §14 — ROADMAP
+       ============================================================ -->
+  <section class="roadmap section" id="roadmap">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[09] ROADMAP</span>
+        <h2 class="section__title">The watch <em>extends.</em></h2>
+        <p class="section__lead">
+          Shipped, building, planned. Dates are targets, not promises — the
+          beacon stays lit either way.
+        </p>
+      </header>
+
+      <div class="roadmap__grid">
+
+        <article class="phase reveal">
+          <header class="phase__head">
+            <span class="phase__q">Q2 2026</span>
+            <span class="phase__state phase__state--shipped">SHIPPED</span>
+          </header>
+          <ul class="phase__list">
+            <li><span class="phase__mark phase__mark--done">&#9635;</span> Free core: 8 production skills</li>
+            <li><span class="phase__mark phase__mark--done">&#9635;</span> GitHub Actions scheduler + runner</li>
+            <li><span class="phase__mark phase__mark--done">&#9635;</span> Shared JSON memory layer</li>
+            <li><span class="phase__mark phase__mark--done">&#9635;</span> Telegram &amp; Discord outputs</li>
+            <li><span class="phase__mark phase__mark--done">&#9635;</span> $VGL fair launch on pump.fun</li>
+          </ul>
+        </article>
+
+        <article class="phase reveal">
+          <header class="phase__head">
+            <span class="phase__q">Q3 2026</span>
+            <span class="phase__state phase__state--active">IN PROGRESS</span>
+          </header>
+          <ul class="phase__list">
+            <li><span class="phase__mark phase__mark--active">&#9651;</span> Prophecy tier — 24 gated skills</li>
+            <li><span class="phase__mark phase__mark--active">&#9651;</span> Skill marketplace (community SKILL.md)</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Slack &amp; webhook outputs</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Backtest harness for skills</li>
+          </ul>
+        </article>
+
+        <article class="phase reveal">
+          <header class="phase__head">
+            <span class="phase__q">Q4 2026</span>
+            <span class="phase__state phase__state--planned">PLANNED</span>
+          </header>
+          <ul class="phase__list">
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Mobile companion app (read-only beacons)</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Multi-chain — Base, Hyperliquid</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Skill conviction scoring + ranking</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Hosted runner (optional, Railway)</li>
+          </ul>
+        </article>
+
+        <article class="phase reveal">
+          <header class="phase__head">
+            <span class="phase__q">2027 +</span>
+            <span class="phase__state phase__state--planned">PLANNED</span>
+          </header>
+          <ul class="phase__list">
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Prophecy DAO — skill curation by vote</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Agent-to-agent skill sharing network</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Independent skill security audits</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> On-chain beacon attestation</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §15 — FAQ
+       ============================================================ -->
+  <section class="faq section" id="faq">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <header class="section__head reveal">
+        <span class="section-label">[10] QUESTIONS</span>
+        <h2 class="section__title">Before you <em>stand watch.</em></h2>
+        <p class="section__lead">
+          Ten honest answers. If yours is missing, the Discord watch desk is
+          open.
+        </p>
+      </header>
+
+      <div class="faq__list reveal">
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[01]</span>
+            <span class="faq__q-text">How is this different from Aeon?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>Aeon is a general-purpose self-evolving agent framework — it can be pointed at anything. VIGIL takes that same architecture and specializes it entirely for trading intelligence. Every skill, every memory schema, every output format is built for whale flow, liquidations, funding and narratives. You could rebuild VIGIL on top of Aeon; we did the work so you don't have to.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[02]</span>
+            <span class="faq__q-text">Why do I need $VGL?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>You don't — for the free core. Eight production skills, the scheduler and the runner are open-source and ungated forever. <code>$VGL</code> only unlocks the <code>prophecy-*</code> tier: pre-market hunting, anomaly detection and the heavier reasoning models. Your fork checks your wallet balance on-chain at run time. No staking, no lockup.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[03]</span>
+            <span class="faq__q-text">Can I run VIGIL without a paid model subscription?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>The runner needs a reasoning-model API key, which you supply as a repo secret. The free core is tuned to run cheaply on smaller models — a typical watcher costs a few dollars a month in API usage. The prophecy tier benefits from larger models, but nothing forces you onto them. Bring your own key, set your own budget.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[04]</span>
+            <span class="faq__q-text">Is the prophecy data accurate?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>VIGIL reports observations, not predictions. A beacon says "this wallet accumulated $1.84M of JUP" — a verifiable on-chain fact — plus a one-line read for context. It never tells you to buy or sell. Treat every beacon as a lead to verify, not a signal to trade blind. The data is as accurate as the indexers it pulls from; the interpretation is yours.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[05]</span>
+            <span class="faq__q-text">What's the gas cost to run it?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>Zero. VIGIL only reads chain state — it never sends transactions, never signs anything, never touches your funds. There is no wallet connection and no gas. The only running cost is your reasoning-model API usage and, if you exceed the free tier, GitHub Actions minutes.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[06]</span>
+            <span class="faq__q-text">Can I write my own skills?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>Yes — that's the core idea. A skill is a single markdown file: YAML frontmatter for schedule and config, a prompt body for instructions. Drop it into the <code>skills/</code> folder and the scheduler picks it up on the next run. No SDK, no build step. Community skills land in the marketplace in Q3 2026.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[07]</span>
+            <span class="faq__q-text">Is the code audited?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>The runtime is fully open-source — every line is on GitHub and every run is a public Actions log you can inspect. Because VIGIL holds no funds and signs no transactions, the attack surface is small. Independent security review of the skill sandbox is on the 2027 roadmap; until then, read the code before you fork it.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[08]</span>
+            <span class="faq__q-text">What chains do you support?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>At launch VIGIL watches Solana and Ethereum for on-chain skills, with funding and liquidation skills covering the major perp venues. Base and Hyperliquid land in Q4 2026. Each skill declares its own <code>chains</code> in frontmatter, so you only run what you care about.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[09]</span>
+            <span class="faq__q-text">Where do beacons get delivered?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>Telegram and Discord at launch — set a chat or channel ID in <code>vigil.config.yml</code> and beacons arrive there. Slack and generic webhooks are in progress for Q3 2026. A skill can fan out to multiple channels by listing them in its <code>outputs</code> field.</p>
+          </div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">
+            <span class="faq__q-num">[10]</span>
+            <span class="faq__q-text">Is VIGIL custodial in any way?</span>
+            <span class="faq__q-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>No. VIGIL runs in your own forked repository, with your own API keys stored as your repo secrets. It never holds your tokens, never connects a wallet for signing, and never routes through our infrastructure. The <code>$VGL</code> balance check is a read-only on-chain query. Your watch is yours alone.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="divider__line"></span><span class="divider__mark">◇</span><span class="divider__line"></span></div>
+
+  <!-- ============================================================
+       §16 — FINAL CTA
+       ============================================================ -->
+  <section class="cta section" id="cta">
+    <div class="cta__texture" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="cta__inner reveal">
+        <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
+        <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
+
+        <span class="cta__eyebrow">
+          <span class="dot dot--pulse"></span> THE BEACON IS LIT
+        </span>
+
+        <h2 class="cta__title">
+          Stand watch<br />
+          <em>with us</em>
+        </h2>
+
+        <p class="cta__sub">
+          The market does not close. Neither does VIGIL. Fork the watch, hold
+          the key, and let the Oracle keep the hours you can't.
+        </p>
+
+        <p class="cta__launch">
+          <span class="num">TBA</span> · launching on
+          <strong>pump.fun</strong> · be the first watcher
+        </p>
+
+        <a href="https://pump.fun" class="btn btn--amber btn--xl" id="cta-button" target="_blank" rel="noopener">
+          Stand watch on pump.fun
+          <span class="btn__arrow">→</span>
+        </a>
+
+        <div class="cta__contract">
+          <span class="cta__contract-k">$VGL CONTRACT</span>
+          <button class="cta__contract-val" id="copy-ca" type="button" aria-label="Copy contract address">
+            <span class="num" id="ca-text">TBA</span>
+            <span class="cta__contract-copy" id="copy-state">[ copy ]</span>
+          </button>
+        </div>
+
+        <p class="cta__fineprint">
+          Always verify the contract address against official channels before
+          interacting. VIGIL provides intelligence, not financial advice.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ============================================================
+       §17 — FOOTER
+       ============================================================ -->
+  <footer class="footer" id="footer">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__grid">
+
+        <div class="footer__col footer__col--brand">
+          <a href="#top" class="footer__logo">
+            <svg class="beacon" width="24" height="24" viewBox="0 0 26 26" aria-hidden="true">
+              <circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+              <path d="M13 4 L13 22 M13 9 L21 5 M13 9 L5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="13" cy="9" r="2.6" fill="currentColor"/>
+            </svg>
+            <span>VIGIL ORACLE</span>
+          </a>
+          <p class="footer__tag">The Oracle that never sleeps. Autonomous trading intelligence, cast in markdown.</p>
+          <div class="footer__status">
+            <span class="dot dot--pulse"></span>
+            <span>STATUS: WATCHING · <span class="num" id="footer-clock">03:47:12 UTC</span></span>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// PRODUCT</span>
+          <a href="#skills" class="footer__link">Skills</a>
+          <a href="#tokenomics" class="footer__link">Tokenomics</a>
+          <a href="#anatomy" class="footer__link">Docs</a>
+          <a href="#roadmap" class="footer__link">Roadmap</a>
+          <a href="#live" class="footer__link">Live execution</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// COMMUNITY</span>
+          <a href="#" class="footer__link">X / Twitter</a>
+          <a href="#" class="footer__link">GitHub</a>
+          <a href="#" class="footer__link">Telegram</a>
+          <a href="#" class="footer__link">Discord</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// LEGAL</span>
+          <a href="#" class="footer__link">Privacy</a>
+          <a href="#" class="footer__link">Terms</a>
+          <a href="#" class="footer__link">Disclaimer</a>
+          <a href="#faq" class="footer__link">FAQ</a>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2026 VIGIL ORACLE · $VGL · all watchers welcome</span>
+        <span class="footer__made">Made with intent in the dark hours</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
