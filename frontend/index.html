@@ -748,38 +748,52 @@
       <div class="arch__frame reveal">
         <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
         <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
-        <div class="scanlines" aria-hidden="true"></div>
-<pre class="arch__ascii">      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-      &#9474;   GITHUB ACTIONS · CRON   &#9474;   wakes the agent on schedule
-      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
-                   &#9474; trigger
-                   &#9660;
-      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-      &#9474;        SCHEDULER         &#9474;   reads frontmatter, picks due skills
-      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
-                   &#9474; dispatch
-                   &#9660;
-      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-      &#9474;       SKILL RUNNER       &#9474;   gathers on-chain state + memory
-      &#9492;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9496;
-           &#9474; prompt         &#9474; read / write
-           &#9660;                &#9660;
-   &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-   &#9474;  REASONING    &#9474;  &#9474; SKILLS / MEM  &#9474;
-   &#9474;   ENGINE      &#9474;&#9668;&#9472;&#9508;  *.md · *.json &#9474;
-   &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
-           &#9474; structured beacon
-           &#9660;
-      &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
-      &#9474;          OUTPUT          &#9474;
-      &#9474;  TELEGRAM · DISCORD · SLACK
-      &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</pre>
+        <div class="arch__strip">// SYSTEM SCHEMATIC · vigil-oracle/runtime · last build 03:47 UTC</div>
+        <div class="scanlines arch__scan" aria-hidden="true"></div>
+<pre class="arch__ascii">┌──────────────────────────┐
+│  <span class="ak">GITHUB ACTIONS · CRON</span>   │
+└────────────┬─────────────┘
+             <span class="aa">▼</span>
+┌──────────────────────────┐
+│        <span class="ak">SCHEDULER</span>         │
+└────────────┬─────────────┘
+             <span class="aa">▼</span>
+┌──────────────────────────┐
+│       <span class="ak">SKILL RUNNER</span>       │
+└──────┬────────────┬──────┘
+       <span class="aa">▼</span>            <span class="aa">▼</span>
+ ┌───────────┐ ┌───────────┐
+ │ <span class="ak">REASONING</span> │ │ <span class="ak">SKILLS/MEM</span>│
+ │  <span class="ak">ENGINE</span>   │<span class="aa">◄</span>│*.md·*.json│
+ └─────┬─────┘ └───────────┘
+       <span class="aa">▼</span>
+┌──────────────────────────┐
+│          <span class="ak">OUTPUT</span>          │
+│<span class="ak">TELEGRAM · DISCORD · SLACK</span>│
+└──────────────────────────┘</pre>
       </div>
 
-      <div class="arch__legend reveal">
-        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Stateless runtime</strong> — nothing persists but the git repo. Memory is committed JSON.</div>
-        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Auditable</strong> — every run is a public Actions log you can replay.</div>
-        <div class="arch__legend-item"><span class="arch__dot"></span><strong>Portable</strong> — the runner is Node + Fastify; lift it to Railway any time.</div>
+      <div class="arch__tree reveal">
+        <div class="arch__tree-row">
+          <span class="arch__tree-br">┌─</span>
+          <span class="arch__tree-k">CRON</span>
+          <span class="arch__tree-d">GitHub Actions wakes the scheduler on a fixed interval — every N minutes, no server to keep alive.</span>
+        </div>
+        <div class="arch__tree-row">
+          <span class="arch__tree-br">├─</span>
+          <span class="arch__tree-k">SCHEDULER</span>
+          <span class="arch__tree-d">Reads every skill's YAML frontmatter and dispatches only the skills whose cron is currently due.</span>
+        </div>
+        <div class="arch__tree-row">
+          <span class="arch__tree-br">├─</span>
+          <span class="arch__tree-k">RUNNER</span>
+          <span class="arch__tree-d">Gathers on-chain state and shared memory, runs the reasoning pass, formats the structured beacon.</span>
+        </div>
+        <div class="arch__tree-row">
+          <span class="arch__tree-br">└─</span>
+          <span class="arch__tree-k">OUTPUT</span>
+          <span class="arch__tree-d">Pushes the beacon to Telegram, Discord or Slack the moment the run completes — then sleeps.</span>
+        </div>
       </div>
 
       <p class="arch__caption reveal">
@@ -857,8 +871,11 @@
           <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
           <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
           <span class="token__box-label">TOTAL SUPPLY</span>
-          <span class="token__box-num num" data-count="1000000000" data-suffix="">0</span>
-          <span class="token__box-sub">fixed · no mint function · no inflation</span>
+          <span class="token__box-figure">
+            <span class="token__box-num num" data-count="1000000000" data-suffix="">0</span>
+            <span class="token__box-fixed">/ FIXED</span>
+          </span>
+          <span class="token__box-sub">fixed<i>·</i>no mint function<i>·</i>no inflation</span>
         </div>
 
         <div class="token__box reveal">
@@ -869,35 +886,49 @@
             <span class="token__bar-seg token__bar-seg--fair" style="width:95%"></span>
             <span class="token__bar-seg token__bar-seg--dev" style="width:5%"></span>
           </div>
-          <div class="token__bar-key">
-            <span><i class="token__swatch token__swatch--fair"></i> 95% fair launch</span>
-            <span><i class="token__swatch token__swatch--dev"></i> 5% locked dev</span>
+          <div class="token__ticks" aria-hidden="true">
+            <span style="left:25%"></span><span style="left:50%"></span><span style="left:75%"></span>
           </div>
-          <span class="token__box-sub">dev allocation time-locked 12 months</span>
+          <div class="token__bar-key">
+            <span class="token__bar-key-major"><i class="token__swatch token__swatch--fair"></i> 95% fair launch</span>
+            <span class="token__bar-key-minor"><i class="token__swatch token__swatch--dev"></i> 5% locked dev</span>
+          </div>
+          <div class="token__timeline">Q2 2026 ─ launch&nbsp;&nbsp;·&nbsp;&nbsp;Q2 2027 ─ dev unlock</div>
         </div>
 
         <div class="token__box reveal">
           <span class="cb cb--tl">[+]</span><span class="cb cb--tr">[+]</span>
           <span class="cb cb--bl">[+]</span><span class="cb cb--br">[+]</span>
           <span class="token__box-label">HOLDER UTILITY</span>
+          <span class="token__verified"><span class="dot dot--pulse"></span> VERIFIED ON-CHAIN</span>
           <ul class="token__util">
-            <li><span class="token__util-mark">&#8594;</span> Unlocks all <code>prophecy-*</code> skills</li>
-            <li><span class="token__util-mark">&#8594;</span> Priority on new skill rollouts</li>
-            <li><span class="token__util-mark">&#8594;</span> Vote weight in the future skill DAO</li>
+            <li><span class="token__util-mark">[+]</span> Unlocks all <code>prophecy-*</code> skills</li>
+            <li><span class="token__util-mark">[+]</span> Priority on new skill rollouts</li>
+            <li><span class="token__util-mark">[+]</span> Vote weight in the future skill DAO</li>
           </ul>
-          <span class="token__box-sub">verified on-chain · no custody</span>
+          <span class="token__box-sub">verified on-chain<i>·</i>no custody</span>
         </div>
 
       </div>
 
       <div class="token__strip reveal">
-        <span class="token__strip-item"><span class="token__strip-k">CHAIN</span> Solana</span>
-        <span class="token__strip-sep">·</span>
-        <span class="token__strip-item"><span class="token__strip-k">LAUNCH</span> pump.fun</span>
-        <span class="token__strip-sep">·</span>
-        <span class="token__strip-item"><span class="token__strip-k">TICKER</span> $VGL</span>
-        <span class="token__strip-sep">·</span>
-        <span class="token__strip-item"><span class="token__strip-k">TAX</span> 0 / 0</span>
+        <span class="token__strip-item"><span class="token__strip-dot"></span><span class="token__strip-k">CHAIN</span><span class="token__strip-v">Solana</span></span>
+        <span class="token__strip-item"><span class="token__strip-dot"></span><span class="token__strip-k">LAUNCH</span><span class="token__strip-v">pump.fun</span></span>
+        <span class="token__strip-item"><span class="token__strip-dot"></span><span class="token__strip-k">TICKER</span><span class="token__strip-v">$VGL</span></span>
+        <span class="token__strip-item"><span class="token__strip-dot"></span><span class="token__strip-k">TAX</span><span class="token__strip-v">0 / 0</span></span>
+      </div>
+
+      <div class="token__flow reveal">
+        <div class="token__flow-head"><span class="dot dot--pulse"></span> TOKEN FLOW</div>
+        <div class="token__flow-chain">
+          <span class="token__flow-step"><b>01</b> hold $VGL</span>
+          <span class="token__flow-arrow">→</span>
+          <span class="token__flow-step"><b>02</b> fork verifies balance on-chain</span>
+          <span class="token__flow-arrow">→</span>
+          <span class="token__flow-step"><b>03</b> prophecy skills unlock</span>
+          <span class="token__flow-arrow">→</span>
+          <span class="token__flow-step"><b>04</b> beacons cast</span>
+        </div>
       </div>
     </div>
   </section>
