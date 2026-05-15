@@ -359,33 +359,33 @@
             <span class="terminal__tag">MARKDOWN</span>
           </div>
           <div class="terminal__body scanlines">
-<pre class="code"><span class="ln"> 1</span><span class="tok-com">---</span>
-<span class="ln"> 2</span><span class="tok-key">name</span>: <span class="tok-str">whale-watch</span>
-<span class="ln"> 3</span><span class="tok-key">tier</span>: <span class="tok-str">free</span>
-<span class="ln"> 4</span><span class="tok-key">schedule</span>: <span class="tok-str">"0 */4 * * *"</span>  <span class="tok-com"># every 4h</span>
-<span class="ln"> 5</span><span class="tok-key">chains</span>: [<span class="tok-str">solana</span>, <span class="tok-str">ethereum</span>]
-<span class="ln"> 6</span><span class="tok-key">threshold_usd</span>: <span class="tok-num">250000</span>
-<span class="ln"> 7</span><span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">discord</span>]
-<span class="ln"> 8</span><span class="tok-com">---</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span><span class="tok-head"># Whale Watch</span>
-<span class="ln">11</span>
-<span class="ln">12</span>You are a whale-tracking analyst. Each run:
-<span class="ln">13</span>
-<span class="ln">14</span><span class="tok-key">1.</span> Pull transfers above <span class="tok-code">threshold_usd</span>
-<span class="ln">15</span>   from the indexer, last <span class="tok-num">4</span> hours.
-<span class="ln">16</span><span class="tok-key">2.</span> Drop known CEX wallets and routers
-<span class="ln">17</span>   via <span class="tok-code">memory/known-wallets.json</span>.
-<span class="ln">18</span><span class="tok-key">3.</span> Cluster remaining flows by entity.
-<span class="ln">19</span>   Flag wallets moving one direction.
-<span class="ln">20</span><span class="tok-key">4.</span> Cross-check tickers against the
-<span class="ln">21</span>   <span class="tok-code">narrative-scanner</span> memory.
-<span class="ln">22</span>
-<span class="ln">23</span><span class="tok-head">## Output</span>
-<span class="ln">24</span>
-<span class="ln">25</span>Emit one beacon per cluster: address,
-<span class="ln">26</span>net USD, direction, one-line read.
-<span class="ln">27</span>Stay terse. No advice. Signal only.</pre>
+<pre class="code code--lines"><span class="cl"><span class="ln">1</span><span class="tok-com">---</span></span>
+<span class="cl"><span class="ln">2</span><span class="tok-key">name</span>: <span class="tok-str">whale-watch</span></span>
+<span class="cl"><span class="ln">3</span><span class="tok-key">tier</span>: <span class="tok-str">free</span></span>
+<span class="cl"><span class="ln">4</span><span class="tok-key">schedule</span>: <span class="tok-str">"0 */4 * * *"</span>  <span class="tok-com"># every 4h</span></span>
+<span class="cl"><span class="ln">5</span><span class="tok-key">chains</span>: [<span class="tok-str">solana</span>, <span class="tok-str">ethereum</span>]</span>
+<span class="cl"><span class="ln">6</span><span class="tok-key">threshold_usd</span>: <span class="tok-num">250000</span></span>
+<span class="cl"><span class="ln">7</span><span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">discord</span>]</span>
+<span class="cl"><span class="ln">8</span><span class="tok-com">---</span></span>
+<span class="cl"><span class="ln">9</span> </span>
+<span class="cl"><span class="ln">10</span><span class="tok-head"># Whale Watch</span></span>
+<span class="cl"><span class="ln">11</span> </span>
+<span class="cl"><span class="ln">12</span>You are a whale-tracking analyst. Each run:</span>
+<span class="cl"><span class="ln">13</span> </span>
+<span class="cl"><span class="ln">14</span><span class="tok-key">1.</span> Pull transfers above <span class="tok-code">threshold_usd</span></span>
+<span class="cl"><span class="ln">15</span>   from the indexer, last <span class="tok-num">4</span> hours.</span>
+<span class="cl"><span class="ln">16</span><span class="tok-key">2.</span> Drop known CEX wallets and routers</span>
+<span class="cl"><span class="ln">17</span>   via <span class="tok-code">memory/known-wallets.json</span>.</span>
+<span class="cl"><span class="ln">18</span><span class="tok-key">3.</span> Cluster remaining flows by entity.</span>
+<span class="cl"><span class="ln">19</span>   Flag wallets moving one direction.</span>
+<span class="cl"><span class="ln">20</span><span class="tok-key">4.</span> Cross-check tickers against the</span>
+<span class="cl"><span class="ln">21</span>   <span class="tok-code">narrative-scanner</span> memory.</span>
+<span class="cl"><span class="ln">22</span> </span>
+<span class="cl"><span class="ln">23</span><span class="tok-head">## Output</span></span>
+<span class="cl"><span class="ln">24</span> </span>
+<span class="cl"><span class="ln">25</span>Emit one beacon per cluster: address,</span>
+<span class="cl"><span class="ln">26</span>net USD, direction, one-line read.</span>
+<span class="cl"><span class="ln">27</span>Stay terse. No advice. Signal only.</span></pre>
           </div>
         </div>
 
@@ -404,12 +404,12 @@
 <span class="log-time">03:47:06</span> <span class="log-warn">[WARN]</span> cluster of <span class="tok-num">4</span> wallets, one entity
 <span class="log-time">03:47:06</span> <span class="log-info">[INFO]</span> entity tag: <span class="tok-str">"early-SOL-LP"</span>
 <span class="log-time">03:47:08</span> <span class="log-hit">[HIT ]</span> net accumulation detected
-<span class="log-out">         addr  </span><span class="tok-addr">7xKpL2&#8230;q9Fv3R</span>
-<span class="log-out">         flow  </span><span class="tok-num">+$1,840,200</span> <span class="tok-up">&#9650; IN</span>
-<span class="log-out">         asset </span><span class="tok-str">JUP</span> · <span class="tok-num">6</span> buys, <span class="tok-num">0</span> sells
+<span class="log-out">addr  </span><span class="tok-addr">7xKpL2&#8230;q9Fv3R</span>
+<span class="log-out">flow  </span><span class="tok-num">+$1,840,200</span> <span class="tok-up">&#9650; IN</span>
+<span class="log-out">asset </span><span class="tok-str">JUP</span> · <span class="tok-num">6</span> buys, <span class="tok-num">0</span> sells
 <span class="log-time">03:47:10</span> <span class="log-info">[INFO]</span> narrative match: <span class="tok-str">"perp DEX szn"</span>
 <span class="log-time">03:47:11</span> <span class="log-info">[INFO]</span> formatting beacon &#8594; telegram
-<span class="log-time">03:47:12</span> <span class="log-hit">[DONE]</span> Beacon sent · <span class="tok-num">1</span> cluster · 11.4s
+<span class="log-time">03:47:12</span> <span class="log-done">[DONE]</span> Beacon sent · <span class="tok-num">1</span> cluster · 11.4s
 <span class="log-cursor">_</span></pre>
           </div>
         </div>
