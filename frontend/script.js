@@ -253,6 +253,27 @@ const CA = 'TBA';
   }
 
   /* ----------------------------------------------------------
+     [06b] SECTION DIVIDERS — amber line scans in on view
+     ---------------------------------------------------------- */
+  function initDividers() {
+    const dividers = $$('.divider');
+    if (!dividers.length || prefersReduced) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-scanned');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    dividers.forEach((d) => io.observe(d));
+  }
+
+  /* ----------------------------------------------------------
      [07] COUNT-UP — stats + tokenomics
      ---------------------------------------------------------- */
   function animateCount(el) {
@@ -583,6 +604,7 @@ const CA = 'TBA';
     initDrawer();
     initParallax();
     initReveals();
+    initDividers();
     initCounters();
     initLiveTerminal();
     initFaq();
