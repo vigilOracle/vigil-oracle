@@ -1,0 +1,19 @@
+{
+  "name": "vigil-oracle-backend",
+  "version": "0.1.0",
+  "description": "Backend API for VIGIL ORACLE ($VGL) — autonomous AI agent framework for crypto traders.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11",
+    "dotenv": "^17",
+    "fastify": "^5"
+  }
+}
