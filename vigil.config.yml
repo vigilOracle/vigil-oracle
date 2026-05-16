@@ -1,0 +1,60 @@
+# ============================================================
+# VIGIL ORACLE — runtime configuration
+# Edit this file on your fork, commit, and the scheduler picks
+# it up on the next run. Nothing here is secret — channel tokens
+# and RPC keys belong in encrypted Actions secrets, not in YAML.
+# ============================================================
+
+watcher:
+  name: vigil-fork-001          # label that appears on every beacon
+  timezone: UTC                 # all schedules are evaluated in UTC
+
+  # Output channels — where beacons are delivered.
+  # Set `enabled: true` and store the token as an Actions secret;
+  # reference it here by the secret name, not the value.
+  outputs:
+    telegram:
+      enabled: false
+      chat_id: ""               # e.g. "@your-channel" or a numeric id
+      token_secret: TELEGRAM_BOT_TOKEN
+    slack:
+      enabled: false
+      webhook_secret: SLACK_WEBHOOK_URL
+
+# ============================================================
+# Skills — toggle each on or off. Disabled skills are skipped
+# by the scheduler even if their cron is due. Prophecy-tier
+# skills additionally require a $VGL balance at runtime.
+# ============================================================
+skills:
+  - name: whale-watch
+    tier: free
+    enabled: true
+
+  - name: liquidation-radar
+    tier: free
+    enabled: true
+
+  - name: funding-arb
+    tier: prophecy
+    enabled: false
+
+  - name: narrative-scanner
+    tier: free
+    enabled: true
+
+  - name: kol-tracker
+    tier: free
+    enabled: true
+
+  - name: dex-sniper-alert
+    tier: prophecy
+    enabled: false
+
+  - name: unlock-calendar
+    tier: free
+    enabled: true
+
+  - name: bridge-monitor
+    tier: prophecy
+    enabled: false

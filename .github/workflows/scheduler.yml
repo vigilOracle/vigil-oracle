@@ -1,0 +1,72 @@
+# ============================================================
+# VIGIL ORACLE — scheduler workflow
+# GitHub Actions is the heartbeat. This workflow wakes on a
+# fixed cron, then hands off to the skill runner.
+#
+# SCAFFOLD: the runner is stubbed below. To make it live, add a
+# runtime/ package with a `vigil run` entry point and replace the
+# echo step with `npm run vigil` (see comments at the bottom).
+# ============================================================
+name: vigil-scheduler
+
+on:
+  # Cron is evaluated in UTC. Every 4 hours is the coarse tick;
+  # individual skills declare their own cadence in SKILL.md and
+  # the runner dispatches only the skills currently due.
+  schedule:
+    - cron: "0 */4 * * *"
+  # Manual trigger — run the watch on demand from the Actions tab.
+  workflow_dispatch:
+
+# Read-only by default — VIGIL never needs write access to the repo
+# to observe. Memory commits, when enabled, use a scoped token.
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # SCAFFOLD: no package.json ships with the scaffold yet, so
+      # dependency install is commented out. Uncomment once the
+      # runtime/ package exists.
+      # - name: Install dependencies
+      #   run: npm ci
+
+      - name: Invoke scheduler
+        run: |
+          echo "vigil scheduler invoked"
+          echo "tick: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "config: vigil.config.yml"
+          echo "skills discovered: $(ls -d skills/*/ 2>/dev/null | wc -l)"
+
+      # ----------------------------------------------------------
+      # HOW TO EXTEND
+      # ----------------------------------------------------------
+      # 1. Add a runtime/ package with `npm` scripts. The entry
+      #    point should read vigil.config.yml, scan skills/*/SKILL.md,
+      #    and dispatch every skill whose `schedule` is due now.
+      # 2. Uncomment the `npm ci` step above.
+      # 3. Replace the echo step with:
+      #
+      #      - name: Run skill watch
+      #        run: npm run vigil
+      #        env:
+      #          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      #          SLACK_WEBHOOK_URL:  ${{ secrets.SLACK_WEBHOOK_URL }}
+      #          SOLANA_RPC_URL:     ${{ secrets.SOLANA_RPC_URL }}
+      #
+      # 4. To persist shared memory, add a commit step that writes
+      #    back skills/*/memory.json and bump `permissions: contents:
+      #    write`.
+      # ----------------------------------------------------------
