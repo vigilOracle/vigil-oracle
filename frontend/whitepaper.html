@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VIGIL ORACLE whitepaper — the architecture, runtime, skill system, memory model and token economics of an autonomous AI agent framework for crypto traders." />
+  <meta name="theme-color" content="#0A0A0B" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230A0A0B'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23FFB347' stroke-width='1.4' opacity='0.4'/><circle cx='16' cy='16' r='3.8' fill='%23FFB347'/></svg>" />
+  <meta property="og:title" content="VIGIL ORACLE — Whitepaper v0.1" />
+  <meta property="og:description" content="An autonomous AI agent framework for crypto traders. The protocol, in full." />
+  <meta property="og:type" content="article" />
+  <title>VIGIL ORACLE — Whitepaper v0.1</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="whitepaper.css" />
+</head>
+<body>
+
+  <!-- SVG grain filter -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+        <feComponentTransfer><feFuncA type="linear" slope="0.42" /></feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============================================================
+       [WP-01] SLIM NAV
+       ============================================================ -->
+  <header class="nav wp-nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="wp-nav__back" aria-label="Back to landing page">
+        <svg class="beacon" width="20" height="20" viewBox="0 0 26 26" aria-hidden="true">
+          <circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+          <path d="M13 4 L13 22 M13 9 L21 5 M13 9 L5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="13" cy="9" r="2.6" fill="currentColor"/>
+        </svg>
+        <span>&#8592; Back to landing</span>
+      </a>
+      <div class="wp-nav__center">
+        <button class="nav__ca" id="nav-copy-ca" type="button" data-ca-copy aria-label="Copy contract address">
+          <span class="nav__ca-k">CA:</span>
+          <span class="num">TBA</span>
+          <span class="nav__ca-state">copy</span>
+        </button>
+      </div>
+      <div class="wp-nav__actions">
+        <a href="https://pump.fun/coin/TBA" class="nav__pump" data-pump target="_blank" rel="noopener">
+          pump.fun <span class="nav__pump-ico" aria-hidden="true">&#8599;</span>
+        </a>
+        <a href="index.html#cta" class="btn btn--amber btn--sm">Stand watch</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       [WP-02] STATUS STRIP
+       ============================================================ -->
+  <div class="wp-strip">
+    <div class="wp-strip__inner">
+      <span>VIGIL ORACLE</span>
+      <span class="wp-strip__sep">·</span>
+      <span>WHITEPAPER <span class="num">v0.1</span></span>
+      <span class="wp-strip__sep">·</span>
+      <span>LAST UPDATED: <span class="num">2026-05-16</span></span>
+      <span class="wp-strip__sep">·</span>
+      <span>STATUS: <span class="num">RATIFIED</span></span>
+    </div>
+  </div>
+
+  <main id="top">
+
+  <!-- ============================================================
+       [WP-03] HERO / TITLE
+       ============================================================ -->
+  <section class="wp-hero">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="wp-hero__inner">
+      <span class="wp-section__label">[ THE PROTOCOL · WHITEPAPER ]</span>
+      <h1 class="wp-hero__title">VIGIL ORACLE<br /><em>Whitepaper</em></h1>
+      <p class="wp-hero__sub">
+        An autonomous AI agent framework for crypto traders. The Oracle that
+        never sleeps — markdown skills, a public runtime, and a token that
+        unlocks the deep watch.
+      </p>
+      <div class="wp-meta">
+        <span>Author: <strong>VIGIL Team</strong></span>
+        <span>Version: <strong>0.1</strong></span>
+        <span>Released: <strong>May 2026</strong></span>
+        <span>License: <strong>MIT</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       [WP-04] LAYOUT — TOC + ARTICLE
+       ============================================================ -->
+  <div class="wp-layout">
+
+    <!-- TABLE OF CONTENTS -->
+    <nav class="wp-toc" id="wp-toc" aria-label="Table of contents">
+      <div class="wp-toc__h">// CONTENTS</div>
+      <div class="wp-toc__list">
+        <a class="wp-toc__link is-active" href="#abstract"><span class="wp-toc__num">[01]</span> Abstract</a>
+        <a class="wp-toc__link" href="#problem"><span class="wp-toc__num">[02]</span> The Problem</a>
+        <a class="wp-toc__link" href="#architecture"><span class="wp-toc__num">[03]</span> Architecture</a>
+        <a class="wp-toc__link" href="#runtime"><span class="wp-toc__num">[04]</span> Agent Runtime</a>
+        <a class="wp-toc__link" href="#skills"><span class="wp-toc__num">[05]</span> Skill System</a>
+        <a class="wp-toc__link" href="#memory"><span class="wp-toc__num">[06]</span> Memory Model</a>
+        <a class="wp-toc__link" href="#token"><span class="wp-toc__num">[07]</span> Token Economics</a>
+        <a class="wp-toc__link" href="#governance"><span class="wp-toc__num">[08]</span> Governance Path</a>
+        <a class="wp-toc__link" href="#security"><span class="wp-toc__num">[09]</span> Security &amp; Audits</a>
+        <a class="wp-toc__link" href="#roadmap"><span class="wp-toc__num">[10]</span> Roadmap</a>
+        <a class="wp-toc__link" href="#conclusion"><span class="wp-toc__num">[11]</span> Conclusion</a>
+      </div>
+    </nav>
+
+    <!-- ARTICLE -->
+    <article class="wp-article">
+
+      <!-- [01] ABSTRACT -->
+      <section class="wp-section" id="abstract">
+        <span class="wp-section__label">[01] ABSTRACT</span>
+        <h2 class="wp-section__title">An oracle, <em>not a bot.</em></h2>
+        <p>
+          VIGIL ORACLE is an autonomous AI agent framework built for one
+          audience — crypto traders — and one job: watching markets that never
+          close. It borrows its architecture from AEON's self-evolving agent
+          design: a GitHub Actions runtime, skills written as plain markdown,
+          and a memory layer that lives in version control. Where AEON is a
+          general-purpose agent, VIGIL is a <strong>vertical agent</strong> —
+          every skill, every default, every output format is tuned for trading
+          intelligence.
+        </p>
+        <p>
+          The framework ships with a free, open-source core. Eight production
+          skills — <code>whale-watch</code>, <code>liquidation-radar</code>,
+          <code>funding-arb</code>, <code>narrative-scanner</code> and others —
+          run on a public cron and cast structured beacons to Telegram, Discord
+          or Slack. Holding <strong>$VGL</strong>, the project's Solana token,
+          unlocks a second tier of twenty-four <code>prophecy-*</code> skills:
+          deeper, heavier, edge-grade watchers gated by an on-chain balance
+          check performed at runtime.
+        </p>
+        <p>
+          VIGIL holds no funds, signs no transactions, and runs no private
+          servers. It is a reasoning layer that sits beside the market and
+          reports what it sees. Every execution is a public Actions log; every
+          memory mutation is a git commit. The result is an agent a trader can
+          fork, audit line by line, and trust — because nothing about it is
+          hidden.
+        </p>
+        <p>
+          This document describes the protocol in full: the problem it
+          addresses, the six-component architecture, the runtime and skill
+          model, the shared memory design, the economics of the $VGL token, and
+          the path from a simple holder-gated launch to community governance.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [02] THE PROBLEM -->
+      <section class="wp-section" id="problem">
+        <span class="wp-section__label">[02] THE PROBLEM</span>
+        <h2 class="wp-section__title">Markets never <em>close.</em></h2>
+        <p>
+          Crypto is the only major market with no bell. Liquidity moves at
+          03:00 as readily as 15:00; a narrative can form on a Sunday and be
+          priced in by Monday. The structural opportunity is permanent
+          coverage. The structural problem is that no human can provide it.
+        </p>
+        <p>
+          A trader sleeps roughly a third of every day. The remaining two
+          thirds are not free either — attention is finite, and the cost of
+          watching twelve dashboards is that you watch none of them well. The
+          moves that matter most — a whale repositioning, a funding rate
+          flipping, an unlock landing into thin books — are precisely the ones
+          that happen while attention is elsewhere. This is the
+          <strong>alpha gap</strong>: the distance between what the market
+          reveals and what any one person can observe.
+        </p>
+        <p>
+          Existing tools do not close that gap. Centralized trading bots —
+          the 3Commas-style platforms — are custodial: they ask for API keys
+          with trade permissions, run on servers you cannot inspect, and
+          monetize by standing between you and your own execution. They
+          automate <em>action</em>, which is the part a trader should keep, and
+          leave <em>observation</em>, the part that should be automated, mostly
+          untouched.
+        </p>
+        <p>
+          General-purpose AI agents have the opposite failure. They can reason
+          about anything, which means they are tuned for nothing. Ask a generic
+          agent to watch on-chain flow and you spend more time describing the
+          domain than you save. It has no built-in sense of what a meaningful
+          transfer size is, what a CEX router looks like, or why a funding-rate
+          divergence is worth a message at 04:00.
+        </p>
+        <p>
+          VIGIL exists in the space those two categories leave open: an agent
+          that is <strong>non-custodial</strong> like good open-source software
+          and <strong>domain-tuned</strong> like a specialist desk. It does not
+          trade for you. It watches, continuously, and tells you what it found.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [03] ARCHITECTURE -->
+      <section class="wp-section" id="architecture">
+        <span class="wp-section__label">[03] ARCHITECTURE</span>
+        <h2 class="wp-section__title">Six parts, <em>nothing hidden.</em></h2>
+        <p>
+          VIGIL is assembled from six stateless components. None of them keeps
+          a long-running process; each wakes, does one job, and exits. There
+          are no private servers in the loop, no custody of funds, and no
+          transaction signing anywhere in the pipeline. The system can only
+          ever read and report.
+        </p>
+        <p>
+          The heartbeat is GitHub's own scheduler. A cron trigger wakes the
+          <strong>Scheduler</strong>, which reads every skill's YAML
+          frontmatter and dispatches only those whose schedule is currently
+          due. The <strong>Skill Runner</strong> gathers on-chain state and
+          shared memory, hands the assembled context to the
+          <strong>reasoning engine</strong>, and formats whatever it returns
+          into a structured beacon. The <strong>Output</strong> stage pushes
+          that beacon to your channels and the run terminates.
+        </p>
+        <div class="wp-code">
+          <div class="wp-code__bar">
+            <span>SYSTEM SCHEMATIC · vigil-oracle/runtime</span>
+            <span class="tok-com">// six components</span>
+          </div>
+<pre class="arch__ascii">┌──────────────────────────┐
+│  <span class="tok-str">GITHUB ACTIONS · CRON</span>   │
+└────────────┬─────────────┘
+             ▼
+┌──────────────────────────┐
+│        <span class="tok-str">SCHEDULER</span>         │
+└────────────┬─────────────┘
+             ▼
+┌──────────────────────────┐
+│       <span class="tok-str">SKILL RUNNER</span>       │
+└──────┬────────────┬──────┘
+       ▼            ▼
+ ┌───────────┐ ┌───────────┐
+ │ <span class="tok-str">REASONING</span> │ │ <span class="tok-str">SKILLS/MEM</span>│
+ │  <span class="tok-str">ENGINE</span>   │◄│*.md·*.json│
+ └─────┬─────┘ └───────────┘
+       ▼
+┌──────────────────────────┐
+│          <span class="tok-str">OUTPUT</span>          │
+│<span class="tok-str">TELEGRAM · WEBHOOK · SLACK</span>│
+└──────────────────────────┘</pre>
+        </div>
+        <p>
+          Because every component is stateless and the only durable state is
+          committed JSON, the entire system is portable. The reference
+          deployment runs on GitHub Actions, but the runner is ordinary
+          Node.js — it relocates to Railway, Render or Fly with a config change
+          and no code change. And because each run is a public Actions log,
+          anyone can audit exactly what the agent saw, when it ran, and what it
+          decided to send. There is no opaque box to trust.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [04] AGENT RUNTIME -->
+      <section class="wp-section" id="runtime">
+        <span class="wp-section__label">[04] AGENT RUNTIME</span>
+        <h2 class="wp-section__title">A thin runner, <em>by design.</em></h2>
+        <p>
+          The runtime is deliberately small — a few hundred lines of Node.js
+          whose entire purpose is to be unsurprising. It is not a framework you
+          extend with plugins; it is a loop you can read in one sitting. Keeping
+          the runner thin is what keeps the attack surface small and the
+          skills, not the engine, the place where intelligence lives.
+        </p>
+        <p>
+          Each invocation follows the same path. The cron trigger fires, the
+          scheduler resolves which skills are due, and the runner executes them
+          one at a time. For each skill it loads the markdown definition,
+          assembles a context object — on-chain data, relevant memory, the
+          skill's own prompt body — runs a single reasoning pass, validates the
+          structured result, and dispatches the beacon. Nothing is held between
+          runs except what the skill explicitly writes back to memory.
+        </p>
+        <div class="wp-code">
+          <div class="wp-code__bar">
+            <span>runtime/run-skill.js</span>
+            <span class="tok-com">// execution loop, simplified</span>
+          </div>
+<pre><span class="tok-com">// each due skill — stateless, one reasoning pass</span>
+<span class="tok-key">async function</span> runSkill(skill) {
+  <span class="tok-key">const</span> def     = parseMarkdown(skill.path);   <span class="tok-com">// frontmatter + prompt</span>
+  <span class="tok-key">const</span> memory  = <span class="tok-key">await</span> loadMemory(def.reads);
+  <span class="tok-key">const</span> chain   = <span class="tok-key">await</span> pullChainState(def.chains);
+
+  <span class="tok-key">const</span> beacon  = <span class="tok-key">await</span> reason({
+    prompt:  def.body,
+    context: { chain, memory },
+    schema:  beaconSchema
+  });
+
+  <span class="tok-key">if</span> (beacon.findings.length) {
+    <span class="tok-key">await</span> dispatch(beacon, def.outputs);   <span class="tok-com">// telegram / slack</span>
+    <span class="tok-key">await</span> commitMemory(beacon.memory);     <span class="tok-com">// git-tracked JSON</span>
+  }
+  <span class="tok-key">return</span> { skill: def.name, ran_at: now(), beacon };
+}</pre>
+        </div>
+        <p>
+          State is never held in process memory. Anything a skill needs to
+          remember — a flagged wallet, a watched ticker, the last value of a
+          metric — is written to a JSON file and committed to the repository.
+          The next run reads it back. This makes every run reproducible from
+          git history alone, and it means a crashed or cancelled run can never
+          leave the system in a corrupt state: the worst case is simply that a
+          beacon was not sent.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [05] SKILL SYSTEM -->
+      <section class="wp-section" id="skills">
+        <span class="wp-section__label">[05] SKILL SYSTEM</span>
+        <h2 class="wp-section__title">A skill is <em>one file.</em></h2>
+        <p>
+          A VIGIL skill is a single markdown file: a block of YAML frontmatter
+          followed by a prompt written in plain English. There is no SDK to
+          learn, no class to subclass, no build step. The frontmatter declares
+          the operational contract — schedule, chains, thresholds, output
+          channels — and the markdown body is the instruction the reasoning
+          engine receives.
+        </p>
+        <p>
+          Adding a skill means dropping a <code>SKILL.md</code> file into the
+          <code>skills/</code> directory. The scheduler discovers it on the
+          next run; nothing else is registered. Removing a skill means deleting
+          the file. Skills can read each other's memory — <code>whale-watch</code>
+          cross-checks tickers against what <code>narrative-scanner</code> has
+          recorded — so the library composes into something larger than any one
+          watcher.
+        </p>
+        <div class="wp-code">
+          <div class="wp-code__bar">
+            <span>skills/whale-watch/SKILL.md</span>
+            <span class="tok-com">// free tier</span>
+          </div>
+<pre><span class="tok-com">---</span>
+<span class="tok-key">name</span>: <span class="tok-str">whale-watch</span>
+<span class="tok-key">tier</span>: <span class="tok-str">free</span>
+<span class="tok-key">schedule</span>: <span class="tok-str">"0 */4 * * *"</span>   <span class="tok-com"># every 4h</span>
+<span class="tok-key">chains</span>: [<span class="tok-str">solana</span>, <span class="tok-str">ethereum</span>]
+<span class="tok-key">threshold_usd</span>: <span class="tok-num">250000</span>
+<span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">slack</span>]
+<span class="tok-com">---</span>
+
+<span class="tok-head"># Whale Watch</span>
+
+You are a whale-tracking analyst. Each run:
+
+1. Pull transfers above <span class="tok-code">threshold_usd</span> from the
+   indexer, last 4 hours.
+2. Drop known CEX wallets and routers via
+   <span class="tok-code">memory/known-wallets.json</span>.
+3. Cluster remaining flows by entity. Flag wallets
+   moving decisively in one direction.
+4. Cross-check tickers against the
+   <span class="tok-code">narrative-scanner</span> memory.
+
+<span class="tok-head">## Output</span>
+
+Emit one beacon per cluster: address, net USD,
+direction, one-line read. Stay terse. No advice.
+Signal only.</pre>
+        </div>
+        <p>
+          Skills ship in two tiers. The free core is eight skills, MIT-licensed
+          and unrestricted. The <code>prophecy-*</code> tier is twenty-four
+          additional skills — pre-market hunting, on-chain anomaly detection,
+          cross-venue flow analysis — that check the runner's wallet for a
+          $VGL balance before executing. The gate is the only difference
+          between the tiers; the skill format, the runtime, and the audit trail
+          are identical.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [06] MEMORY MODEL -->
+      <section class="wp-section" id="memory">
+        <span class="wp-section__label">[06] MEMORY MODEL</span>
+        <h2 class="wp-section__title">Memory is <em>a commit.</em></h2>
+        <p>
+          VIGIL's memory is a set of JSON files committed to the repository.
+          There is no database in the reference design. Keys are namespaced by
+          skill — <code>whale-watch/known-wallets</code>,
+          <code>narrative-scanner/active-themes</code> — so skills can read
+          across each other's namespaces while ownership of each key stays
+          unambiguous.
+        </p>
+        <p>
+          Putting memory in git is not a limitation; it is the audit trail.
+          Every change to what the agent believes is a commit with a timestamp,
+          a diff, and a run that produced it. You can replay the agent's state
+          at any point in its history, and you can see exactly which run
+          flagged a wallet and why. Memory is bounded by convention: skills are
+          written to prune their own stale entries each run, so the files stay
+          small and the diffs stay readable.
+        </p>
+        <p>
+          For deployments that outgrow file-based memory — high-frequency
+          skills, or operators running large skill libraries — an optional
+          Postgres or Supabase adapter is on the roadmap. It is strictly
+          opt-in. The default, and the recommendation for every individual
+          trader forking the repo, remains committed JSON: it has no
+          infrastructure cost, no credentials to leak, and no state the git
+          history cannot reconstruct.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [07] TOKEN ECONOMICS -->
+      <section class="wp-section" id="token">
+        <span class="wp-section__label">[07] TOKEN ECONOMICS</span>
+        <h2 class="wp-section__title">One token, <em>one job.</em></h2>
+        <p>
+          <strong>$VGL</strong> is a Solana token launched through pump.fun. It
+          has exactly one function: it gates the <code>prophecy-*</code> skill
+          tier. There is no second utility bolted on, no governance theatre at
+          launch, and no promise that the token is anything other than an
+          access key for the deep watch.
+        </p>
+        <p>
+          Supply is fixed at <strong>1,000,000,000</strong> $VGL. There is no
+          mint authority, no inflation schedule, and no mechanism to create
+          more — the supply that exists at launch is the supply that exists
+          forever. Distribution is a <strong>95% fair launch</strong> on
+          pump.fun with no presale and no private allocation, and
+          <strong>5% reserved for development</strong> under a 12-month
+          on-chain timelock.
+        </p>
+        <p>
+          Utility is verified on-chain at runtime. When a <code>prophecy-*</code>
+          skill is due, the runner performs a read-only RPC call to check the
+          configured wallet's $VGL balance against the skill's threshold. If
+          the balance clears, the skill runs. The token is never spent, never
+          staked, and never transferred by the framework — holding is the
+          entire mechanism.
+        </p>
+        <p>
+          There is deliberately no staking, no emissions, and no yield. VIGIL
+          does not pay you to hold its token, because a token that pays you to
+          hold it is selling something other than the product. $VGL is worth
+          holding if, and only if, the prophecy skills are worth running. The
+          one forward-looking commitment is a community skill marketplace —
+          described in the next section — where $VGL may curate which
+          community-authored skills enter the canon.
+        </p>
+        <div class="wp-table-wrap">
+          <table class="wp-table">
+            <thead>
+              <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Total supply</td><td class="num">1,000,000,000 $VGL</td></tr>
+              <tr><td>Distribution</td><td>95% fair launch · 5% dev (12mo timelock)</td></tr>
+              <tr><td>Utility</td><td>Unlocks 24 prophecy-tier skills</td></tr>
+              <tr><td>Launch venue</td><td>pump.fun · Solana</td></tr>
+              <tr><td>Transfer tax</td><td class="num">0%</td></tr>
+              <tr><td>Mint authority</td><td>Revoked — supply is fixed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="wp-callout">
+          <p>
+            $VGL is an access token for software, not an investment contract.
+            It carries no claim on revenue, no entitlement to returns, and no
+            guarantee of value. Hold it to run prophecy skills — nothing else
+            is promised.
+          </p>
+        </div>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [08] GOVERNANCE PATH -->
+      <section class="wp-section" id="governance">
+        <span class="wp-section__label">[08] GOVERNANCE PATH</span>
+        <h2 class="wp-section__title">Soft now, <em>fuller later.</em></h2>
+        <p>
+          VIGIL launches with the simplest governance that works: none. The
+          core team maintains the repository, the skill canon is curated by
+          merge review, and $VGL does exactly one thing — gate the prophecy
+          tier. Shipping a working product to real watchers matters more than
+          shipping a voting contract no one has used yet.
+        </p>
+        <p>
+          In Q3 2026 the model widens. A community skill marketplace opens,
+          letting anyone publish a skill for others to fork; $VGL holders gain
+          a curation vote over which submitted skills are promoted into the
+          official library. This is soft governance — it shapes the canon, not
+          the treasury or the code — and it is the first point at which holding
+          the token does something beyond unlocking skills.
+        </p>
+        <p>
+          The 2027+ horizon is a full prophecy DAO: holder-directed funding of
+          new skill development, a community-managed treasury seeded by the
+          timelocked dev allocation, and on-chain proposals for protocol
+          direction. That destination is stated plainly so it can be planned
+          toward — but it is earned by adoption, not assumed by whitepaper.
+          Governance expands only as fast as there is a community to exercise
+          it.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [09] SECURITY & AUDITS -->
+      <section class="wp-section" id="security">
+        <span class="wp-section__label">[09] SECURITY &amp; AUDITS</span>
+        <h2 class="wp-section__title">Small surface, <em>by default.</em></h2>
+        <p>
+          VIGIL's strongest security property is architectural: there is almost
+          nothing to attack. The framework holds no funds, signs no
+          transactions, and has no custody of anything. The only on-chain
+          action it ever performs is a read-only RPC call to check a $VGL
+          balance. An attacker who fully compromised a running VIGIL instance
+          would gain the ability to send misleading Telegram messages — and
+          nothing more. The blast radius is, by construction, a notification.
+        </p>
+        <p>
+          Each skill executes inside a sandboxed container with no write access
+          beyond its own memory namespace and no network access beyond the
+          declared data sources. Because skills are plain markdown, a fork's
+          full behaviour is reviewable by reading the files — there is no
+          compiled binary, no minified dependency, and no hidden execution
+          path. Secrets such as RPC keys and channel tokens live in the
+          deployment's encrypted environment, never in the repository.
+        </p>
+        <p>
+          The core runtime is open-source and auditable today; the
+          line-by-line readability of the runner is itself a security feature.
+          A formal independent audit of the runtime and the on-chain balance
+          check is scheduled for 2027, ahead of the prophecy DAO and treasury
+          work — the point at which the system first touches funds and the
+          stakes of a vulnerability rise. Until then, the honest security
+          claim is the architectural one: VIGIL cannot lose what it never
+          holds.
+        </p>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [10] ROADMAP -->
+      <section class="wp-section" id="roadmap">
+        <span class="wp-section__label">[10] ROADMAP</span>
+        <h2 class="wp-section__title">The watch <em>ahead.</em></h2>
+        <p>
+          The roadmap below mirrors the public landing-page timeline with the
+          engineering detail behind each milestone. Dates are targets, not
+          guarantees; skills ship when they are reliable, not when a quarter
+          ends.
+        </p>
+        <ul>
+          <li><strong>Q2 2026 — Foundation · in progress.</strong> Fair launch of $VGL on pump.fun on <strong>18 May 2026</strong>. Eight free-tier skills live on a public cron. Backend API and live beacon feed online. Telegram and Slack outputs shipped.</li>
+          <li><strong>Q3 2026 — Expansion · planned.</strong> Full 24-skill prophecy tier released. Community skill marketplace opens with $VGL curation voting. Discord output and webhook adapter added. Optional Postgres/Supabase memory layer.</li>
+          <li><strong>Q4 2026 — Reach · planned.</strong> Mobile companion app for beacon delivery and skill management. Hosted one-click deploy for non-technical traders. Cross-skill correlation engine linking whale, funding and narrative signals.</li>
+          <li><strong>2027+ — Autonomy · planned.</strong> Prophecy DAO with holder-directed skill funding and a community treasury. Independent security audit of runtime and balance check. Self-evolving skills that propose their own threshold tuning.</li>
+        </ul>
+      </section>
+
+      <div class="wp-divider"><span>◇</span></div>
+
+      <!-- [11] CONCLUSION -->
+      <section class="wp-section" id="conclusion">
+        <span class="wp-section__label">[11] CONCLUSION</span>
+        <h2 class="wp-section__title">Stand <em>watch.</em></h2>
+        <p>
+          VIGIL is the watch that never closes. It does not predict the market
+          and it does not trade it — it observes the market continuously, in
+          the hours a human cannot, and reports what it finds in a format a
+          trader can act on. The framework is small enough to read in an
+          afternoon, open enough to audit completely, and specialized enough to
+          be useful the moment it is forked.
+        </p>
+        <p>
+          There are three ways in. Fork the repository and run the free core
+          tonight. Write a skill — it is one markdown file — and watch the
+          thing you care about. Hold $VGL to unlock the deep watch. None of it
+          asks for custody, a signup, or your trust on faith. The Oracle that
+          never sleeps. Stand watch.
+        </p>
+        <div class="wp-cta">
+          <a href="https://github.com/vigilOracle" class="btn btn--ghost btn--lg" target="_blank" rel="noopener">Fork the repo</a>
+          <a href="index.html#cta" class="btn btn--amber btn--lg">Stand watch with us <span class="btn__arrow">&#8594;</span></a>
+        </div>
+      </section>
+
+    </article>
+  </div>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" id="footer">
+    <div class="dotgrid" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__grid">
+
+        <div class="footer__col footer__col--brand">
+          <a href="index.html" class="footer__logo">
+            <svg class="beacon" width="24" height="24" viewBox="0 0 26 26" aria-hidden="true">
+              <circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+              <path d="M13 4 L13 22 M13 9 L21 5 M13 9 L5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="13" cy="9" r="2.6" fill="currentColor"/>
+            </svg>
+            <span>VIGIL ORACLE</span>
+          </a>
+          <p class="footer__tag">The Oracle that never sleeps. Autonomous trading intelligence, cast in markdown.</p>
+          <div class="footer__status">
+            <span class="dot dot--pulse"></span>
+            <span>STATUS: WATCHING · <span class="num" id="footer-clock">03:47:12 UTC</span></span>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// PRODUCT</span>
+          <a href="index.html#skills" class="footer__link">Skills</a>
+          <a href="index.html#tokenomics" class="footer__link">Tokenomics</a>
+          <a href="whitepaper.html" class="footer__link">Whitepaper</a>
+          <a href="dashboard.html" class="footer__link">Dashboard</a>
+          <a href="index.html#roadmap" class="footer__link">Roadmap</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// COMMUNITY</span>
+          <a href="https://x.com/VigilOracle" class="footer__link" target="_blank" rel="noopener">X / Twitter</a>
+          <a href="https://github.com/vigilOracle" class="footer__link" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://t.me/vigiloracle" class="footer__link" target="_blank" rel="noopener">Telegram</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__h">// LEGAL</span>
+          <a href="#" class="footer__link">Privacy</a>
+          <a href="#" class="footer__link">Terms</a>
+          <a href="#" class="footer__link">Disclaimer</a>
+          <a href="index.html#faq" class="footer__link">FAQ</a>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2026 VIGIL ORACLE · $VGL · all watchers welcome</span>
+        <span class="footer__made">Made with intent in the dark hours</span>
+      </div>
+
+      <div class="footer__signoff">[+] BUILT IN THE DARK HOURS</div>
+    </div>
+  </footer>
+
+  </main>
+
+  <!-- ============================================================
+       SCRIPTS — reuse landing runtime (Lenis · nav · CA copy ·
+       pump links · toast), plus TOC scroll-spy
+       ============================================================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    /* TOC scroll-spy — highlight the section in view */
+    (function () {
+      'use strict';
+      var links = Array.prototype.slice.call(
+        document.querySelectorAll('.wp-toc__link')
+      );
+      var sections = links
+        .map(function (l) { return document.querySelector(l.getAttribute('href')); })
+        .filter(Boolean);
+      if (!sections.length) return;
+
+      var current = null;
+      function setActive(id) {
+        if (id === current) return;
+        current = id;
+        links.forEach(function (l) {
+          l.classList.toggle('is-active', l.getAttribute('href') === '#' + id);
+        });
+      }
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          /* pick the entry nearest the top that is intersecting */
+          var visible = entries
+            .filter(function (e) { return e.isIntersecting; })
+            .sort(function (a, b) {
+              return a.boundingClientRect.top - b.boundingClientRect.top;
+            });
+          if (visible.length) setActive(visible[0].target.id);
+        },
+        { rootMargin: '-96px 0px -62% 0px', threshold: 0 }
+      );
+      sections.forEach(function (s) { io.observe(s); });
+    })();
+  </script>
+</body>
+</html>
