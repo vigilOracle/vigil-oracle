@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="VIGIL ORACLE — an autonomous AI agent framework for crypto traders. Whale-watch, liquidation radar, narrative scanning. The Oracle that never sleeps." />
   <meta name="theme-color" content="#0A0A0B" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230A0A0B'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23FFB347' stroke-width='1.4' opacity='0.4'/><circle cx='16' cy='16' r='3.8' fill='%23FFB347'/></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0B'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23FFB347' stroke-width='1.4' opacity='0.4'/><circle cx='16' cy='16' r='3.8' fill='%23FFB347'/></svg>" />
   <meta property="og:title" content="VIGIL ORACLE — The Oracle that never sleeps" />
   <meta property="og:description" content="Autonomous trading intelligence. Markdown skills, GitHub Actions runtime, self-evolving. $VGL holders unlock prophecy skills." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vigiloracle.xyz/" />
+  <meta property="og:image" content="https://vigiloracle.xyz/assets/hero-lighthouse.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@VigilOracle" />
   <title>VIGIL ORACLE — The Oracle that never sleeps</title>
 
+  <link rel="canonical" href="https://vigiloracle.xyz/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -74,6 +82,14 @@
         <a href="#roadmap" class="nav__link">Roadmap</a>
       </nav>
       <div class="nav__actions">
+        <button class="nav__ca" id="nav-copy-ca" type="button" data-ca-copy aria-label="Copy contract address">
+          <span class="nav__ca-k">CA:</span>
+          <span class="num">TBA</span>
+          <span class="nav__ca-state">copy</span>
+        </button>
+        <a href="https://pump.fun/coin/TBA" class="nav__pump" data-pump target="_blank" rel="noopener">
+          pump.fun <span class="nav__pump-ico" aria-hidden="true">↗</span>
+        </a>
         <a href="#cta" class="btn btn--amber btn--sm">Stand watch</a>
         <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -95,7 +111,17 @@
     <a href="#faq" class="drawer__link"><span class="drawer__num">05</span> FAQ</a>
     <a href="#cta" class="btn btn--amber drawer__cta">Stand watch with us</a>
     <div class="drawer__foot">
-      <span class="dot dot--pulse"></span> STATUS: WATCHING
+      <button class="nav__ca drawer__ca" id="drawer-copy-ca" type="button" data-ca-copy aria-label="Copy contract address">
+        <span class="nav__ca-k">CA:</span>
+        <span class="num">TBA</span>
+        <span class="nav__ca-state">copy</span>
+      </button>
+      <a href="https://pump.fun/coin/TBA" class="nav__pump drawer__pump" data-pump target="_blank" rel="noopener">
+        pump.fun <span class="nav__pump-ico" aria-hidden="true">↗</span>
+      </a>
+      <div class="drawer__status">
+        <span class="dot dot--pulse"></span> STATUS: WATCHING
+      </div>
     </div>
   </div>
   <div class="drawer__scrim" id="drawer-scrim"></div>
@@ -365,7 +391,7 @@
 <span class="cl"><span class="ln">4</span><span class="tok-key">schedule</span>: <span class="tok-str">"0 */4 * * *"</span>  <span class="tok-com"># every 4h</span></span>
 <span class="cl"><span class="ln">5</span><span class="tok-key">chains</span>: [<span class="tok-str">solana</span>, <span class="tok-str">ethereum</span>]</span>
 <span class="cl"><span class="ln">6</span><span class="tok-key">threshold_usd</span>: <span class="tok-num">250000</span></span>
-<span class="cl"><span class="ln">7</span><span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">discord</span>]</span>
+<span class="cl"><span class="ln">7</span><span class="tok-key">outputs</span>: [<span class="tok-str">telegram</span>, <span class="tok-str">slack</span>]</span>
 <span class="cl"><span class="ln">8</span><span class="tok-com">---</span></span>
 <span class="cl"><span class="ln">9</span> </span>
 <span class="cl"><span class="ln">10</span><span class="tok-head"># Whale Watch</span></span>
@@ -430,7 +456,7 @@
         </div>
         <div class="anatomy__note">
           <span class="anatomy__note-k">BEACON</span>
-          <p>The single structured output — pushed to Telegram, Discord or Slack the moment the run completes.</p>
+          <p>The single structured output — pushed to Telegram or Slack the moment the run completes.</p>
         </div>
       </div>
     </div>
@@ -769,7 +795,7 @@
        <span class="aa">▼</span>
 ┌──────────────────────────┐
 │          <span class="ak">OUTPUT</span>          │
-│<span class="ak">TELEGRAM · DISCORD · SLACK</span>│
+│<span class="ak">TELEGRAM · WEBHOOK · SLACK</span>│
 └──────────────────────────┘</pre>
       </div>
 
@@ -792,7 +818,7 @@
         <div class="arch__tree-row">
           <span class="arch__tree-br">└─</span>
           <span class="arch__tree-k">OUTPUT</span>
-          <span class="arch__tree-d">Pushes the beacon to Telegram, Discord or Slack the moment the run completes — then sleeps.</span>
+          <span class="arch__tree-d">Pushes the beacon to Telegram or Slack the moment the run completes — then sleeps.</span>
         </div>
       </div>
 
@@ -1036,25 +1062,25 @@
         <article class="phase reveal">
           <header class="phase__head">
             <span class="phase__q">Q2 2026</span>
-            <span class="phase__state phase__state--shipped">SHIPPED</span>
+            <span class="phase__state phase__state--active">IN PROGRESS</span>
           </header>
           <ul class="phase__list">
-            <li><span class="phase__mark phase__mark--done">&#9635;</span> Free core: 8 production skills</li>
-            <li><span class="phase__mark phase__mark--done">&#9635;</span> GitHub Actions scheduler + runner</li>
-            <li><span class="phase__mark phase__mark--done">&#9635;</span> Shared JSON memory layer</li>
-            <li><span class="phase__mark phase__mark--done">&#9635;</span> Telegram &amp; Discord outputs</li>
-            <li><span class="phase__mark phase__mark--done">&#9635;</span> $VGL fair launch on pump.fun</li>
+            <li><span class="phase__mark phase__mark--shipped">&#9635;</span> Free core: 8 production skills</li>
+            <li><span class="phase__mark phase__mark--shipped">&#9635;</span> GitHub Actions scheduler + runner</li>
+            <li><span class="phase__mark phase__mark--shipped">&#9635;</span> Shared JSON memory layer</li>
+            <li><span class="phase__mark phase__mark--shipped">&#9635;</span> Telegram outputs</li>
+            <li><span class="phase__mark phase__mark--upcoming">&#9679;</span> $VGL fair launch on pump.fun · 18 May 2026</li>
           </ul>
         </article>
 
         <article class="phase reveal">
           <header class="phase__head">
             <span class="phase__q">Q3 2026</span>
-            <span class="phase__state phase__state--active">IN PROGRESS</span>
+            <span class="phase__state phase__state--planned">PLANNED</span>
           </header>
           <ul class="phase__list">
-            <li><span class="phase__mark phase__mark--active">&#9651;</span> Prophecy tier — 24 gated skills</li>
-            <li><span class="phase__mark phase__mark--active">&#9651;</span> Skill marketplace (community SKILL.md)</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Prophecy tier — 24 gated skills</li>
+            <li><span class="phase__mark phase__mark--todo">&#9671;</span> Skill marketplace (community SKILL.md)</li>
             <li><span class="phase__mark phase__mark--todo">&#9671;</span> Slack &amp; webhook outputs</li>
             <li><span class="phase__mark phase__mark--todo">&#9671;</span> Backtest harness for skills</li>
           </ul>
@@ -1102,14 +1128,14 @@
         <span class="section-label">[10] QUESTIONS</span>
         <h2 class="section__title">Before you <em>stand watch.</em></h2>
         <p class="section__lead">
-          Ten honest answers. If yours is missing, the Discord watch desk is
+          Ten honest answers. If yours is missing, the Telegram watch desk is
           open.
         </p>
       </header>
 
       <div class="faq__list reveal">
 
-        <details class="faq__item">
+        <details class="faq__item" open>
           <summary class="faq__q">
             <span class="faq__q-num">[01]</span>
             <span class="faq__q-text">How is this different from Aeon?</span>
@@ -1204,7 +1230,7 @@
             <span class="faq__q-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq__a">
-            <p>Telegram and Discord at launch — set a chat or channel ID in <code>vigil.config.yml</code> and beacons arrive there. Slack and generic webhooks are in progress for Q3 2026. A skill can fan out to multiple channels by listing them in its <code>outputs</code> field.</p>
+            <p>Telegram at launch — set a chat or channel ID in <code>vigil.config.yml</code> and beacons arrive there. Slack and generic webhooks are in progress for Q3 2026. A skill can fan out to multiple channels by listing them in its <code>outputs</code> field.</p>
           </div>
         </details>
 
@@ -1250,12 +1276,38 @@
           the key, and let the Oracle keep the hours you can't.
         </p>
 
-        <p class="cta__launch">
-          <span class="num">TBA</span> · launching on
+        <p class="cta__launch cta__launch--date">
+          <span class="num">18 MAY 2026</span> · <span class="num">3PM UTC</span> ·
           <strong>pump.fun</strong> · be the first watcher
         </p>
 
-        <a href="https://pump.fun" class="btn btn--amber btn--xl" id="cta-button" target="_blank" rel="noopener">
+        <div class="countdown" id="countdown" aria-label="Time until launch">
+          <div class="countdown__unit">
+            <span class="countdown__num" id="cd-days">--</span>
+            <span class="countdown__label">DAYS</span>
+          </div>
+          <span class="countdown__sep">:</span>
+          <div class="countdown__unit">
+            <span class="countdown__num" id="cd-hours">--</span>
+            <span class="countdown__label">HOURS</span>
+          </div>
+          <span class="countdown__sep">:</span>
+          <div class="countdown__unit">
+            <span class="countdown__num" id="cd-mins">--</span>
+            <span class="countdown__label">MINS</span>
+          </div>
+          <span class="countdown__sep">:</span>
+          <div class="countdown__unit">
+            <span class="countdown__num" id="cd-secs">--</span>
+            <span class="countdown__label">SECS</span>
+          </div>
+        </div>
+
+        <div class="countdown__live" id="countdown-live" hidden>
+          <span class="dot dot--pulse"></span> LIVE NOW · THE BEACON IS LIT
+        </div>
+
+        <a href="https://pump.fun/coin/TBA" class="btn btn--amber btn--xl" id="cta-button" data-pump target="_blank" rel="noopener">
           Stand watch on pump.fun
           <span class="btn__arrow">→</span>
         </a>
@@ -1313,10 +1365,9 @@
 
         <div class="footer__col">
           <span class="footer__h">// COMMUNITY</span>
-          <a href="#" class="footer__link">X / Twitter</a>
-          <a href="#" class="footer__link">GitHub</a>
-          <a href="#" class="footer__link">Telegram</a>
-          <a href="#" class="footer__link">Discord</a>
+          <a href="https://x.com/VigilOracle" class="footer__link" target="_blank" rel="noopener">X / Twitter</a>
+          <a href="https://github.com/vigilOracle" class="footer__link" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://t.me/vigiloracle" class="footer__link" target="_blank" rel="noopener">Telegram</a>
         </div>
 
         <div class="footer__col">
@@ -1333,6 +1384,8 @@
         <span class="footer__copy">© 2026 VIGIL ORACLE · $VGL · all watchers welcome</span>
         <span class="footer__made">Made with intent in the dark hours</span>
       </div>
+
+      <div class="footer__signoff">[+] BUILT IN THE DARK HOURS</div>
     </div>
   </footer>
 

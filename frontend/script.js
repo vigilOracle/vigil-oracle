@@ -3,10 +3,14 @@
    Lenis smooth scroll · GSAP ScrollTrigger reveals · counters
    live terminal cycle · FAQ accordion · drawer · clipboard
    live backend integration: stats · terminal · skills grid
+   launch countdown · pump.fun link wiring
    ============================================================ */
 
 const CA = 'TBA';
 const API_BASE = 'https://vigil-oracle-api-production.up.railway.app/api';
+
+/* fair launch — 18 May 2026, 15:00 UTC */
+const LAUNCH_TS = Date.parse('2026-05-18T15:00:00Z');
 
 (function () {
   'use strict';
@@ -689,41 +693,125 @@ const API_BASE = 'https://vigil-oracle-api-production.up.railway.app/api';
     });
   }
 
+  /* toast — bottom-right confirmation, auto-dismiss in 2s */
+  let toastEl = null;
+  let toastTimer = null;
+  function showToast(msg) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.id = 'toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.innerHTML = '<span class="dot dot--pulse"></span>' + esc(msg);
+    requestAnimationFrame(() => toastEl.classList.add('is-shown'));
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-shown'), 2000);
+  }
+
+  /* copy the CA — clipboard API with a non-secure-context fallback */
+  async function copyCA() {
+    try {
+      await navigator.clipboard.writeText(CA);
+      return true;
+    } catch (e) {
+      const tmp = document.createElement('textarea');
+      tmp.value = CA;
+      tmp.style.position = 'fixed';
+      tmp.style.opacity = '0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(tmp);
+      return ok;
+    }
+  }
+
   /* ----------------------------------------------------------
      [10] CONTRACT — copy to clipboard
+     final-CTA block + nav / drawer CA pills
      ---------------------------------------------------------- */
   function initContract() {
+    /* final-CTA contract block */
     const caText = $('#ca-text');
     const copyBtn = $('#copy-ca');
     const copyState = $('#copy-state');
-    if (!caText || !copyBtn) return;
+    if (caText && copyBtn) {
+      caText.textContent = CA;
+      copyBtn.addEventListener('click', async () => {
+        const ok = await copyCA();
+        copyBtn.classList.add('is-copied');
+        if (copyState) copyState.textContent = ok ? '[ copied ✓ ]' : '[ failed ]';
+        if (ok) showToast('Contract copied');
+        setTimeout(() => {
+          copyBtn.classList.remove('is-copied');
+          if (copyState) copyState.textContent = '[ copy ]';
+        }, 1500);
+      });
+    }
 
-    caText.textContent = CA;
-
-    copyBtn.addEventListener('click', async () => {
-      let ok = false;
-      try {
-        await navigator.clipboard.writeText(CA);
-        ok = true;
-      } catch (e) {
-        // fallback for non-secure contexts
-        const tmp = document.createElement('textarea');
-        tmp.value = CA;
-        tmp.style.position = 'fixed';
-        tmp.style.opacity = '0';
-        document.body.appendChild(tmp);
-        tmp.select();
-        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
-        document.body.removeChild(tmp);
-      }
-
-      copyBtn.classList.add('is-copied');
-      copyState.textContent = ok ? '[ copied ]' : '[ failed ]';
-      setTimeout(() => {
-        copyBtn.classList.remove('is-copied');
-        copyState.textContent = '[ copy ]';
-      }, 1900);
+    /* nav + drawer CA pills — share the toast feedback */
+    $$('[data-ca-copy]').forEach((pill) => {
+      const numEl = $('.num', pill);
+      const stateEl = $('.nav__ca-state', pill);
+      if (numEl) numEl.textContent = CA;
+      pill.addEventListener('click', async () => {
+        const ok = await copyCA();
+        pill.classList.add('is-copied');
+        if (stateEl) stateEl.textContent = ok ? 'copied ✓' : 'failed';
+        if (ok) showToast('Contract copied');
+        setTimeout(() => {
+          pill.classList.remove('is-copied');
+          if (stateEl) stateEl.textContent = 'copy';
+        }, 1500);
+      });
     });
+  }
+
+  /* ----------------------------------------------------------
+     [10b] PUMP.FUN LINKS — built from CA, find-replace at launch
+     ---------------------------------------------------------- */
+  function initPumpLinks() {
+    const url = 'https://pump.fun/coin/' + CA;
+    $$('[data-pump]').forEach((a) => { a.setAttribute('href', url); });
+  }
+
+  /* ----------------------------------------------------------
+     [10c] LAUNCH COUNTDOWN — ticks to LAUNCH_TS, then goes LIVE
+     ---------------------------------------------------------- */
+  function initCountdown() {
+    const wrap = $('#countdown');
+    if (!wrap) return;
+
+    const liveEl = $('#countdown-live');
+    const ctaBtn = $('#cta-button');
+    const dEl = $('#cd-days');
+    const hEl = $('#cd-hours');
+    const mEl = $('#cd-mins');
+    const sEl = $('#cd-secs');
+    let timer = null;
+
+    function goLive() {
+      wrap.hidden = true;
+      if (liveEl) liveEl.hidden = false;
+      if (ctaBtn) ctaBtn.classList.add('is-live');
+      if (timer) clearInterval(timer);
+    }
+
+    function tick() {
+      const diff = LAUNCH_TS - Date.now();
+      if (!isFinite(diff) || diff <= 0) { goLive(); return; }
+      const total = Math.floor(diff / 1000);
+      dEl.textContent = pad(Math.floor(total / 86400));
+      hEl.textContent = pad(Math.floor(total / 3600) % 24);
+      mEl.textContent = pad(Math.floor(total / 60) % 60);
+      sEl.textContent = pad(total % 60);
+    }
+
+    tick();
+    timer = setInterval(tick, 1000);
   }
 
   /* ----------------------------------------------------------
@@ -758,6 +846,8 @@ const API_BASE = 'https://vigil-oracle-api-production.up.railway.app/api';
     initSkillsGrid();
     initFaq();
     initContract();
+    initPumpLinks();
+    initCountdown();
     initMarquee();
 
     // final layout settle
